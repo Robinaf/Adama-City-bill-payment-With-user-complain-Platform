@@ -1,0 +1,3 @@
+ <input type="text" placeholder="age" name = "middle_name" required>
+  <input type="radio" name="gender" value="Female" id="dot-2">
+  <span class="gender">Female</span>
