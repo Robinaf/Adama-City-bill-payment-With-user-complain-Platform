@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 
 
 
+
 class CustomerForm(ModelForm):
     class Meta:
         model = Customer
