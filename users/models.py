@@ -55,6 +55,7 @@ class Customer(Account):
     age = models.IntegerField(null=True)
     is_customer = models.BooleanField(default=False)
     house_number = models.IntegerField(null=True)
+    Role.Customer
 
 
 class CompanyAdmin(Account):
