@@ -53,8 +53,8 @@ class Account(AbstractBaseUser,PermissionsMixin):
 class Customer(Account):
     gender = models.CharField(max_length=10,null=True)
     age = models.IntegerField(null=True)
-    is_customer = models.BooleanField(default=False)
     house_number = models.IntegerField(null=True)
+   
 
     
 

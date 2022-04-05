@@ -15,7 +15,7 @@ from django.urls import reverse_lazy
 
 from .models import *
 from .forms import CreateUserForm
-from .models import Customer
+#from .models import Customer
 #from .filters import OrderFilter
 from .decorators import unauthenticated_user, allowed_users, admin_only
 
@@ -51,7 +51,7 @@ def registerPage(request):
     if request.method == "POST":
         # form = CreateUserForm()
         if form.is_valid():
-            Account.role = 7
+            Account.role = 'Customer'
             user=form.save()
             username = form.cleaned_data.get('username')
             messages.success(
