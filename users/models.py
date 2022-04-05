@@ -8,18 +8,18 @@ from django.contrib.auth.models import AbstractBaseUser,UserManager,PermissionsM
 #from water.models import WaterCustomer
 
 # Create your models here.
-class Role(models.Model):
-    Water_Admin =1
-    Electric_Admin = 2
-    Water_Reader = 3
-    Water_Technician = 4
-    Electric_Reader = 5
-    Electric_Technician = 6
-    Customer = 7
-    ROLE_CHOICES = ((1,'Water_Admin'),(2,'Electric_Admin'),(3,'Water_Reader'),(4,'Water_Technician'),(5,'Electric_Reader'),(6,'Electric_Technician'),(7,'Customer'))
-    id = models.PositiveIntegerField(choices=ROLE_CHOICES,primary_key=True)
-    def __str__(self):
-      return self.get_id_display()
+# class Role(models.Model):
+#     Water_Admin =1
+#     Electric_Admin = 2
+#     Water_Reader = 3
+#     Water_Technician = 4
+#     Electric_Reader = 5
+#     Electric_Technician = 6
+#     Customer = 7
+#     ROLE_CHOICES = ((1,'Water_Admin'),(2,'Electric_Admin'),(3,'Water_Reader'),(4,'Water_Technician'),(5,'Electric_Reader'),(6,'Electric_Technician'),(7,'Customer'))
+#     id = models.PositiveIntegerField(choices=ROLE_CHOICES,primary_key=True)
+#     def __str__(self):
+#       return self.get_id_display()
 class Account(AbstractBaseUser,PermissionsMixin):
     #user= models.OneToOneField(User,null = True, blank = True, on_delete=models.CASCADE)
     username = models.CharField(null=False,max_length=100,primary_key = True)
@@ -37,17 +37,17 @@ class Account(AbstractBaseUser,PermissionsMixin):
     #is_customer = models.BooleanField(default=False)
     
     
-    roles = models.ManyToManyField(Role)
+    #roles = models.ManyToManyField(Role)
     #role = models.CharField(max_length= 10)
 
-    ROLE_CHOICES = [('1','Water_Admin'),('2','Electric_Admin'),('3','Water_Reader'),('4','Water_Technician'),('5','Electric_Reader'),('6','Electric_Technician'),('7','Customer')]
-    #role=models.PositiveSmallIntegerField(choices=ROLE_CHOICES,blank=True,null = True)
+    ROLE_CHOICES = [(1,'Water_Admin'),(2,'Electric_Admin'),(3,'Water_Reader'),(4,'Water_Technician'),(5,'Electric_Reader'),(6,'Electric_Technician'),(7,'Customer')]
+    role=models.PositiveSmallIntegerField(choices=ROLE_CHOICES,blank=True,null = True)
     objects = UserManager()
    
     # class Meta:
     #     db_table = "customer"
     def __str__(self):
-        return self.username
+        return self.first_name + "  "+ self.middle_name
     REQUIRED_FIELDS = []
     USERNAME_FIELD = 'username'
 class Customer(Account):
@@ -55,7 +55,8 @@ class Customer(Account):
     age = models.IntegerField(null=True)
     is_customer = models.BooleanField(default=False)
     house_number = models.IntegerField(null=True)
-    Role.Customer
+
+    
 
 
 class CompanyAdmin(Account):

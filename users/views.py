@@ -51,7 +51,7 @@ def registerPage(request):
     if request.method == "POST":
         # form = CreateUserForm()
         if form.is_valid():
-            Customer.is_customer = True
+            Account.role = 7
             user=form.save()
             username = form.cleaned_data.get('username')
             messages.success(
