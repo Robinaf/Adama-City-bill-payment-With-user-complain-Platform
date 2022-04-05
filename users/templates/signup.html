@@ -168,6 +168,7 @@ form .user-details .input-box{
     <div class="content">
       <form method="post" action="">
         {% csrf_token %}
+        
         <div class="user-details">
           <div class="input-box">
             <span class="details">First Name</span>
@@ -225,6 +226,11 @@ form .user-details .input-box{
             <span class="gender">Female</span>
           </label>
           </div>
+                                                                   
+        </div>
+        <div class="customer">
+          
+         {{ form.is_customer}}<h4>I am customer</h4>
         </div>
         <div class="button">
           <input type="submit" value="Sign up"  >

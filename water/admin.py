@@ -1,9 +1,10 @@
-# #from django.contrib import admin
+# from django.contrib import admin
+# from .models import Customer
 # from . import models
 
-# # Register your models here.
+# # # Register your models here.
 # class WaterAdminArea(admin.AdminSite):
-#     site_header='Water Admin Area'
+#      site_header='Water Admin Area'
 # water_site = WaterAdminArea(name='WaterAdmin')
 
-# water_site.register(models.WaterCustomer)
+# admin.site.register(models.WaterCustomer)

@@ -71,7 +71,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Project.wsgi.application'
-AUTH_USER_MODEL = 'users.Customer'
+AUTH_USER_MODEL = 'users.Account'
 
 
 
@@ -80,17 +80,18 @@ AUTH_USER_MODEL = 'users.Customer'
 
 DATABASES = {
      'default': {
-         'ENGINE': 'django.db.backends.sqlite3',
-         'NAME': BASE_DIR / 'db.sqlite3',
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'newbpucp',
-#         'USER': 'roba',
-#         'PASSWORD': 'roba', 
-#         'HOST': '127.0.0.1',
-#         'PORT': '3306',
-#         'OPTIONS':{
-#             'autocommit': True,
-#         },
+          'ENGINE': 'django.db.backends.sqlite3',
+          'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.mysql',
+        # 'NAME': 'roba',
+        # 'USER': 'roba',
+        # 'PASSWORD': 'roba', 
+        # 'HOST': '127.0.0.1',
+        # 'PORT': '3306',
+        # 'OPTIONS':{
+        #     'init_command': "SET sql_mode ='STRICT_TRANS_TABLES'",
+        #     'autocommit': True,
+        # },
      }
  }
 

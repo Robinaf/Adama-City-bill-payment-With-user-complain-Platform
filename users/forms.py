@@ -5,6 +5,7 @@ from django import forms
 from django.contrib.auth.models import User
 
 
+
 class CustomerForm(ModelForm):
     class Meta:
         model = Customer
@@ -14,4 +15,4 @@ class CustomerForm(ModelForm):
 class CreateUserForm(UserCreationForm):
     class Meta:
         model = Customer
-        fields = ['username','first_name','middle_name','last_name', 'email','age','house_number','gender','password1', 'password2']
+        fields = ['username','first_name','middle_name','last_name', 'email','age','house_number','gender','password1', 'password2','is_customer']
