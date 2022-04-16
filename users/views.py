@@ -51,8 +51,10 @@ def registerPage(request):
     if request.method == "POST":
         # form = CreateUserForm()
         if form.is_valid():
-            Account.role = 'Customer'
-            user=form.save()
+            # Account.role = 'Customer'
+            user=form.save(commit=False)
+            user.role = 17
+            user.save()
             username = form.cleaned_data.get('username')
             messages.success(
                 request, "Account sucessfully created for " + username)
@@ -62,7 +64,7 @@ def registerPage(request):
             print(form.errors)
 
     context = {'form': form}
-    return render(request, 'signup.html', context)
+    return render(request, 'customer/signup.html', context)
 def user_login(request):
     if not request.user.is_authenticated:
         if request.method == 'POST':
@@ -74,14 +76,14 @@ def user_login(request):
                 login(request,user_obj)
                 return redirect('home')
             return HttpResponse('Invalid Credentials...!!!')
-        return render(request, 'login.html')
+        return render(request, 'customer/login1.html')
     else:
         return redirect('home')
   
     
 @login_required
 def home(request):
-  return render(request, 'home.html')
+  return render(request, 'customer/home.html')
   # Logout view 
 def user_logout(request):
    logout(request)
