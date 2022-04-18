@@ -4,6 +4,7 @@
 # from unittest.util import _MAX_LENGTH
 from django.db import models
 from users.models import Customer
+from users.models import *
 
 # Create your models here.
 class WaterCustomer(models.Model):
@@ -14,6 +15,10 @@ class WaterCustomer(models.Model):
 
     # def __str__(self):
     #     return self.title
+class WaterEmployee(Account):
+    employee_id = models.IntegerField(primary_key=True)
+    class Meta:
+        db_table = "water_employee"
 class WaterBillInfo(models.Model):
     meter_id=models.ForeignKey(on_delete=models.CASCADE, to=WaterCustomer)
     prev_reading = models.DecimalField(max_digits=50,decimal_places=2)

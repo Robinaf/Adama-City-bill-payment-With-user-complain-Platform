@@ -8,3 +8,4 @@ class WaterAdminArea(AdminSite):
 water_site = WaterAdminArea(name='WaterAdmin')
 
 water_site.register(models.WaterCustomer)
+water_site.register(models.WaterEmployee)
