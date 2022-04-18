@@ -55,7 +55,7 @@ def registerPage(request):
         if form.is_valid():
             # Account.role = 'Customer'
             user=form.save(commit=False)
-            user.role = 17
+            user.role = 7
             user.save()
             username = form.cleaned_data.get('username')
             messages.success(
