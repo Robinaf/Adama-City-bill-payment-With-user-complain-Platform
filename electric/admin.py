@@ -8,3 +8,4 @@ class ElectricAdminArea(AdminSite):
 electric_site = ElectricAdminArea(name='ElectricAdmin')
 
 electric_site.register(models.ElectricCustomer)
+electric_site.register(models.ElectricEmployee)
