@@ -6,9 +6,9 @@ from django.db import models
 from users.models import Customer
 
 # Create your models here.
-class WaterCustomer(models.Model):
+class WaterCustomer(Customer):
     meter_id=models.IntegerField(primary_key=True)
-    username = models.ForeignKey(null=False,max_length=100, on_delete=models.CASCADE, to = Customer)
+    #username = models.ForeignKey(null=False,max_length=100, on_delete=models.CASCADE, to = Customer)
     class Meta:
         db_table = "water_customer"
 

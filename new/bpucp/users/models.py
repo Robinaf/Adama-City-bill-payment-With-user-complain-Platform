@@ -1,14 +1,30 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils import timezone
+from .managers import UserManager
+#from apps.users.managers import UserManager
+from . import constants as user_constants
 
-# Create your models here.
-class Customer(models.Model):
-    username = models.CharField(null=False,max_length=100,primary_key = True)#on_delete=models.CASCADE, to=WaterCustomer)
-    f_name = models.CharField(max_length=50,null=True)
-    m_name = models.CharField(max_length=50,null=True)
-    l_name = models.CharField(max_length=50,null=True)
-    email =  models.EmailField(max_length=50,null=True)
-    house_no = models.IntegerField(null=True)
-    gender = models.CharField(max_length=10,null=True)
-    age = models.IntegerField(null=True)
-    class Meta:
-        db_table = "customer"
+class User(AbstractUser):
+    username = None # remove username field, we will use email as unique identifier
+    email = models.EmailField(unique=True, null=True, db_index=True)
+    is_active = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
+    date_joined = models.DateTimeField(default=timezone.now)
+    user_type = models.PositiveSmallIntegerField(choices=user_constants.USER_TYPE_CHOICES)
+
+    REQUIRED_FIELDS = []
+    USERNAME_FIELD = 'email'
+
+    objects = UserManager()
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True,related_name="user_profile")
+    phone = models.CharField(max_length=255,blank=True,null=True)
+    is_verified = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.user.email
