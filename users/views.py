@@ -41,6 +41,8 @@ from .decorators import unauthenticated_user, allowed_users, admin_only
 
 #     else: 
 #         return render(request,'signup.html') 
+# def  index(request):
+#     return render(request,'customer/index/index.html')
 @unauthenticated_user
 def registerPage(request):
     form = CreateUserForm(request.POST or None)
@@ -88,4 +90,5 @@ def home(request):
 def user_logout(request):
    logout(request)
    return redirect('login')
+
 
