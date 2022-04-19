@@ -1,3 +1,4 @@
+{%load static%}
 <!DOCTYPE html>
 <!--Code by Divinector (www.divinectorweb.com)-->
 <html lang="en">
@@ -131,8 +132,14 @@
         }
     
     } -->
-<link rel="stylesheet" href="style.css">     
+<link rel="stylesheet" href="{% static '/css/style1.css/' %}">
+<style>
+p {
+    background-image: url("{% static '/img/adama.jpg/' %}");
+  }     
+
 </style>
+
 </head>
 <body>
     <header>
