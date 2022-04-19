@@ -1,0 +1,50 @@
+{%load static%}
+<!DOCTYPE html>
+<!--Code by Divinector (www.divinectorweb.com)-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage</title>
+   
+
+<link rel="stylesheet" href="{% static '/css/style1.css/' %}">
+<style>
+p {
+    background-image: url("{% static '/img/adama.jpg/' %}");
+  }     
+
+</style>
+
+</head>
+<body>
+    <header>
+        <div class="Login_as">
+            <h1>Login_as</h1>
+        </div>
+    <div class="wrapper">
+        <ul class="nav-area">
+        
+        <li><a href="#">System Admin</a></li> 
+        <li><a href="#">Customer</a></li> 
+        <li><a href="#">Organization Admin+</a>
+            <div class="drop">
+             <ul>
+                <li><a href="#">water admin</a></li>
+                <li><a href="#">electric admin</a></li>
+            </ul> 
+             </div> 
+              </li>  
+        <li><a href="#">Technician</a></li>
+        <li><a href="#">Meter Reader</a></li>
+        
+    </ul>
+</div>
+<div class="welcome-text">
+        <h1>
+Well Come To <br><span>Adama City Bill Payment With Complain Platform</span></h1>
+
+    </div>
+</header>
+
+</body>
+</html>
