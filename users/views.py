@@ -42,7 +42,7 @@ from .decorators import unauthenticated_user, allowed_users, admin_only
 #     else: 
 #         return render(request,'signup.html') 
 def  index(request):
-    return render(request,'customer/index.html')
+    return render(request,'index.html')
 @unauthenticated_user
 def registerPage(request):
     form = CreateUserForm(request.POST or None)
@@ -66,26 +66,44 @@ def registerPage(request):
             print(form.errors)
 
     context = {'form': form}
-    return render(request, 'customer/signup.html', context)
+    return render(request, 'signup.html', context)
 def user_login(request):
     if not request.user.is_authenticated:
         if request.method == 'POST':
             print("In Post Method...!!!")
             usern = request.POST.get("username")
             pswd = request.POST.get("password")
-            user_obj = authenticate(username=usern, password=pswd)
-            if user_obj:
-                login(request,user_obj)
+            user = authenticate(username=usern, password=pswd)
+            if user is not None and user.role==7:
+                login(request,user)
                 return redirect('home')
+            elif user is not None and user.role==1:
+                login(request,user)
+                return redirect('wateradmin')
+            elif user is not None and user.role==2:
+                login(request,user)
+                return redirect('electricadmin')
+            elif user is not None and user.role==3:
+                login(request,user)
+                return redirect('waterreader')
+            elif user is not None and user.role==4:
+                login(request,user)
+                return redirect('watertechnician')
+            elif user is not None and user.role==5:
+                login(request,user)
+                return redirect('electricreader')
+            elif user is not None and user.role==6:
+                login(request,user)
+                return redirect('electrictechnician')
             return HttpResponse('Invalid Credentials...!!!')
-        return render(request, 'customer/login1.html')
-    else:
-        return redirect('home')
+        return render(request, 'login.html')
+    # else:
+    #     return redirect('home')
   
     
 @login_required
 def home(request):
-  return render(request, 'customer/home.html')
+  return render(request, 'customer/customer.html')
   # Logout view 
 def user_logout(request):
    logout(request)
