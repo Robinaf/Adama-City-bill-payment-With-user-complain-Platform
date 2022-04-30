@@ -5,7 +5,7 @@ from django.urls import path as url
 from water.admin import water_site
 from electric.admin import electric_site
 from users import views
-from users.admin import admin_site
+# from users.admin import admin_site
 from django.contrib import admin
 
 
@@ -18,7 +18,7 @@ urlpatterns = [
     path("login/", views.user_login, name='login'),
     path("signup/", views.registerPage, name='registerPage'),
     path('logout/',views.user_logout,name='logout'),
-    url('superadmin/', admin_site.urls),
+    #url('superadmin/', admin_site.urls),
     path('electrecaldashbord',include('electric.urls'))
 
 

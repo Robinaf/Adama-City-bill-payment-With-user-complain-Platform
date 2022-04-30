@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
-from .admin import admin_site
+# from .admin import admin_site
 
 urlpatterns=[
     path("registerPage",views.registerPage, name= "registerPage"),
