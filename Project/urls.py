@@ -14,6 +14,7 @@ urlpatterns = [
     path('wateradmin/', water_site.urls),
     path('electricadmin/',electric_site.urls),
     path('',include('users.urls')),
+    path('',include('water.urls')),
     path('',views.index,name ='index'),
     path("login/", views.user_login, name='login'),
     path("signup/", views.registerPage, name='registerPage'),

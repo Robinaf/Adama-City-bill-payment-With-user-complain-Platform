@@ -24,7 +24,8 @@ class UserAdminConfig(UserAdmin):
 
 # admin_site = UserAdminConfig(Account,'admin_site')
 admin.site.register(CompanyAdmin,UserAdminConfig)
-# admin.site.register(Customer)
+
+admin.site.register(Customer)
 # admin.site.register(CompanyAdmin)
 
 # Register your models here.

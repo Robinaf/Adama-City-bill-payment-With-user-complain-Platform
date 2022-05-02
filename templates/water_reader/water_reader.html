@@ -1,3 +1,4 @@
+{%load static%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,8 +6,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Water_reader</title>
+    <!-- <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}"> -->
+    <link rel="stylesheet" href="{% static '/css/mdb.min.css' %}">
+    <style>
+        
+    </style>
 </head>
 <body>
     <h1>This is water reader dashboard</h1>
+    
+  
+      <div class="mx-auto" style="width: 200px">
+      <div class="container">
+        <div class="row">
+          <form action="{% url 'water_reader'%}" method="post">
+            {% csrf_token %}
+          <div class="col-md">
+            <input name="meter_id_id" type="text" id="formControlLg" class="form-control form-control-lg" required />
+            <label class="form-label" for="formControlLg">Enter meter id of Customer</label>
+            <input name="current_reading" type="text" id="formControlDefault" class="form-control"required />
+            <label class="form-label" for="formControlDefault">Insert the value of current reading</label>
+            <button type="submit" class="btn btn-primary">submit</button>
+          </div>
+          
+        </form>
+      </div>
+    </div>
+
+
+     <Script src = "{% static '/js/mdb.min.js' %}"></Script>
 </body>
 </html>

@@ -21,17 +21,17 @@ class WaterEmployee(Account):
         db_table = "water_employee"
 class WaterBillInfo(models.Model):
     meter_id=models.ForeignKey(on_delete=models.CASCADE, to=WaterCustomer)
-    prev_reading = models.DecimalField(max_digits=50,decimal_places=2)
+    prev_reading = models.DecimalField(max_digits=50,decimal_places=2,default=0)
     current_reading = models.DecimalField(max_digits=50,decimal_places=2)
-    date =models.DateField(null=True)
-    status = models.CharField(max_length=50,null=True)
+    date =models.DateField(default=timezone.now)
+    status = models.CharField(max_length=50,null=True,default='not paid')
     class Meta:
         db_table = "waterbillinfo"
 
 class WaterComplain(models.Model):
     meter_id = models.ForeignKey(on_delete=models.CASCADE, to=WaterCustomer)
     complain = models.TextField()
-    date = models.DateField(null=True)
-    status = models.CharField(max_length=50,null=True)
+    date = models.DateField(default=timezone.now)
+    status = models.CharField(max_length=50,null=True,default='not solved')
     class Meta:
         db_table = "water_complain"
