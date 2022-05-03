@@ -5,6 +5,7 @@
 from django.db import models
 from users.models import Customer
 from users.models import *
+from django.utils import timezone
 
 # Create your models here.
 class WaterCustomer(models.Model):
@@ -24,7 +25,12 @@ class WaterBillInfo(models.Model):
     prev_reading = models.DecimalField(max_digits=50,decimal_places=2,default=0)
     current_reading = models.DecimalField(max_digits=50,decimal_places=2)
     date =models.DateField(default=timezone.now)
-    status = models.CharField(max_length=50,null=True,default='not paid')
+    is_paid = models.BooleanField(max_length=50,default=False)
+    Month_choice = [('january','january'),('february','february'),('march','march'),('april','april'),
+    ('may','may'),('june','june'),('july','july'),('august','august'),('september','september'),('october','october'),('november','november'),('december','december')]
+    month=models.PositiveSmallIntegerField(choices=Month_choice,blank=True,null = True)
+    year = models.IntegerField(null=True)
+    amount = models.DecimalField(max_digits=50,decimal_places=2,null=True)
     class Meta:
         db_table = "waterbillinfo"
 
@@ -35,3 +41,5 @@ class WaterComplain(models.Model):
     status = models.CharField(max_length=50,null=True,default='not solved')
     class Meta:
         db_table = "water_complain"
+class WaterBalance(models.Model):
+    balance = models.DecimalField(max_digits=50,default=0.00,decimal_places=2)

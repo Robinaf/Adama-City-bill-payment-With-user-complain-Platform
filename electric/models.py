@@ -28,3 +28,6 @@ class ElectricComplain(models.Model):
     status = models.CharField(max_length=50,null=True)
     class Meta:
         db_table = "electric_complain"
+class ElectricBalance(models.Model):
+     balance = models.DecimalField(max_digits=50,default=0.00,decimal_places=2)
+

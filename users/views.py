@@ -103,7 +103,7 @@ def user_login(request):
     
 @login_required
 def home(request):
-  return render(request, 'customer/customer.html')
+  return render(request, 'customer/index.html')
   # Logout view 
 def user_logout(request):
    logout(request)

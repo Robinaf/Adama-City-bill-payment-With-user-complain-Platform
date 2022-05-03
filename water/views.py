@@ -1,3 +1,4 @@
+from multiprocessing import context
 from django.shortcuts import render,redirect
 from .models import WaterBillInfo,WaterCustomer
 
@@ -19,5 +20,20 @@ def water_reader(request):
         return redirect ('water_reader')
     
     return render(request,'water_reader/water_reader.html')
+def admin_cheek_bill(request):
+    a=WaterBillInfo.objects.all()
+ 
+    context ={
+        'a':a
+    }
+    return render(request,'water_admin/water_admin.html',context)
 # def water_complain(request):
 #     if request.method=== "POST":
+def bill_generate (request):
+    wc = WaterBillInfo.objects.all()
+    wc.amount =7*(wc.current_reading - wc.prev_reading)
+    
+    context ={
+        'a':wc
+    }
+    return  render(request,'water_admin/water_admin.html',context)

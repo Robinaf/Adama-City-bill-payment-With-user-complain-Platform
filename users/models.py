@@ -78,13 +78,18 @@ class Account(AbstractBaseUser,PermissionsMixin):
     # class Meta:
     #     db_table = "customer"
     def __str__(self):
-        return self.first_name 
+        if self.username:
+             return self.username
+        else:
+            return self.email
+       
     REQUIRED_FIELDS = []
     USERNAME_FIELD = 'username'
 class Customer(Account):
     gender = models.CharField(max_length=10,null=True)
     age = models.IntegerField(null=True)
     house_number = models.IntegerField(null=True)
+    balance = models.DecimalField(max_digits=50,default=0.00,decimal_places=2)
    
 
     
@@ -92,6 +97,8 @@ class Customer(Account):
 
 class CompanyAdmin(Account):
     company_name = models.CharField(max_length=100)
+    balance = models.DecimalField(max_digits=50,default=0.00,decimal_places=2)
+
 
 
 
