@@ -1,4 +1,6 @@
 from multiprocessing import context
+from django.db.models import IntegerField
+from django.db.models.functions import Cast
 from django.shortcuts import render,redirect
 from .models import WaterBillInfo,WaterCustomer
 
@@ -9,11 +11,24 @@ def addemployee(request):
 def water_reader(request):
     if request.method=="POST":
         meter_id_id =request.POST.get('meter_id_id')
+        
         current_reading = request.POST.get('current_reading')
+        month = request.POST.get('month')
+        year = request.POST.get('year')
         wc = WaterCustomer.objects.get(meter_id=meter_id_id)
+        
+        # bi= WaterBillInfo.objects.filter(prev_reading=prev_reading)
+        # prev_reading=bi.prev_reading
         billinfo = WaterBillInfo(
             meter_id_id = wc.meter_id,
-            current_reading=current_reading
+           
+             
+            current_reading=current_reading,
+            month=month,
+            year=year,
+
+            # prev_reading = wc.prev_reading,
+            amount = int(current_reading) *2
 
         )
         billinfo.save()
@@ -32,6 +47,7 @@ def admin_cheek_bill(request):
 def bill_generate (request):
     wc = WaterBillInfo.objects.all()
     wc.amount =7*(wc.current_reading - wc.prev_reading)
+
     
     context ={
         'a':wc

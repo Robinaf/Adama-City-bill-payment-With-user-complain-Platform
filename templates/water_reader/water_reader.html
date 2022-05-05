@@ -22,10 +22,14 @@
           <form action="{% url 'water_reader'%}" method="post">
             {% csrf_token %}
           <div class="col-md">
-            <input name="meter_id_id" type="text" id="formControlLg" class="form-control form-control-lg" required />
+            <input name="meter_id_id" type="number" id="formControlLg" class="form-control form-control-lg" required />
             <label class="form-label" for="formControlLg">Enter meter id of Customer</label>
-            <input name="current_reading" type="text" id="formControlDefault" class="form-control"required />
+            <input name="current_reading" type="number" id="billvalue" class="form-control"required />
             <label class="form-label" for="formControlDefault">Insert the value of current reading</label>
+            <input name="month" type="text" id="month" class="form-control"required />
+            <label class="form-label" for="formControlDefault">month</label>
+            <input name="year" type="text" id="year" class="form-control"required />
+            <label class="form-label" for="formControlDefault">year</label>
             <button type="submit" class="btn btn-primary">submit</button>
           </div>
           
