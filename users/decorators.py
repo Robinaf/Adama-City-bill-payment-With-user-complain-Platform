@@ -18,6 +18,22 @@ def allowed_users(allowed_roles=[]):
 			group = None
 			if request.user.groups.exists():
 				group = request.user.groups.all()[0].name
+				if group =='customer':
+					return redirect('home')
+				
+				elif group =='water_admin':
+					return redirect('wateradmin')
+				elif group =='electric_admin':
+					return redirect('electricadmin')
+				else:
+					return redirect('login')
+			
+			
+				
+			
+				
+			
+				 
 
 			if group in allowed_roles:
 				return view_func(request, *args, **kwargs)
@@ -36,6 +52,7 @@ def admin_only(view_func):
             return redirect('user-page')
         elif group == 'admin':
             return view_func(request, *args, **kwargs)
+		
         else:
             return redirect('login')
 

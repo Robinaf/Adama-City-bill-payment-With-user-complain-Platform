@@ -1,6 +1,8 @@
+from tokenize import group
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User,auth
 from .forms import CreateUserForm
+from django.contrib.auth.models import Group
 from .decorators import unauthenticated_user, allowed_users, admin_only
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
@@ -58,6 +60,8 @@ def registerPage(request):
             user.role = 7
             user.save()
             username = form.cleaned_data.get('username')
+            group= Group.objects.get(name='customer')
+            user.groups.add(group)
             messages.success(
                 request, "Account sucessfully created for " + username)
             return redirect('login')
@@ -67,6 +71,7 @@ def registerPage(request):
 
     context = {'form': form}
     return render(request, 'signup.html', context)
+
 def user_login(request):
     if not request.user.is_authenticated:
         if request.method == 'POST':
@@ -76,6 +81,7 @@ def user_login(request):
             user = authenticate(username=usern, password=pswd)
             if user is not None and user.role==7:
                 login(request,user)
+                request.session.set_expiry(30)
                 return redirect('home')
             elif user is not None and user.role==1:
                 login(request,user)
@@ -101,12 +107,14 @@ def user_login(request):
     #     return redirect('home')
   
     
-@login_required
+#@login_required
 def home(request):
-  return render(request, 'customer/index.html')
+  return render(request, 'customer/customerbase.html')
   # Logout view 
 def user_logout(request):
    logout(request)
    return redirect('login')
+def complain(request):
+    return render(request,'customer/complain.html')
 
 

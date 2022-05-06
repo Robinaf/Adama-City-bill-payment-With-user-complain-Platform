@@ -45,10 +45,10 @@
 		  <li class="dropdown">
 		  <a href="#homeSubmenu1" data-toggle="collapse" aria-expanded="false" 
 		  class="dropdown-toggle">
-		  <i class="material-icons">mail</i>Water complain
+		  <i class="material-icons" id="watercomplain">mail</i>Water complain
 		  </a>
 		  <ul class="collapse list-unstyled menu" id="homeSubmenu1">
-		     <li><a href="#">layout 1</a></li>
+		     <li><a href="{% url 'complain' %}" id="complain">layout 1</a></li>
 			 <li><a href="#">layout 2</a></li>
 			 <li><a href="#">layout 3</a></li>
 		  </ul>
@@ -554,7 +554,9 @@
    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
   
   
+  
   <script type="text/javascript">
+document. getElementById("complain"). onclick = function () { location. href = "customer/complain.html"; };
        $(document).ready(function(){
 	      $(".xp-menubar").on('click',function(){
 		    $("#sidebar").toggleClass('active');
