@@ -2,12 +2,14 @@ from multiprocessing import context
 from django.db.models import IntegerField
 from django.db.models.functions import Cast
 from django.shortcuts import render,redirect
-from .models import WaterBillInfo,WaterCustomer
+from .models import WaterBillInfo,WaterCustomer,WaterComplain
 
 
 # Create your views here.
-def addemployee(request):
-    return render(request,'admin_home.html')
+def water_admin(request):
+    wc=WaterCustomer.objects.all()
+
+    return render(request,'water_admin/index.html',{'WaterCustomer':wc})
 def water_reader(request):
     if request.method=="POST":
         meter_id_id =request.POST.get('meter_id_id')
@@ -35,21 +37,23 @@ def water_reader(request):
         return redirect ('water_reader')
     
     return render(request,'water_reader/water_reader.html')
-def admin_cheek_bill(request):
-    a=WaterBillInfo.objects.all()
+# def admin_cheek_bill(request):
+#     a=WaterBillInfo.objects.all()
  
-    context ={
-        'a':a
-    }
-    return render(request,'water_admin/water_admin.html',context)
-# def water_complain(request):
-#     if request.method=== "POST":
-def bill_generate (request):
-    wc = WaterBillInfo.objects.all()
-    wc.amount =7*(wc.current_reading - wc.prev_reading)
+#     context ={
+#         'a':a
+#     }
+#     return render(request,'water_admin/water_admin.html',context)
+def complain(request):
+    if request.method=="POST":
+         meter_id_id =request.POST.get('meter_id_id')
+         complain =request.POST.get('complain')
+         wc=WaterCustomer.objects.get(meter_id=meter_id_id)
 
-    
-    context ={
-        'a':wc
-    }
-    return  render(request,'water_admin/water_admin.html',context)
+         complaindetail = WaterComplain(
+             meter_id_id =wc.meter_id,
+             complain=complain
+         )
+         complaindetail.save()
+         return render(request,'customer/main.html')
+    return render(request,'customer/complain1.html')
