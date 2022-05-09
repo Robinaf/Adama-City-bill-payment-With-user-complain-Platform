@@ -15,7 +15,7 @@ class WaterCustomer(models.Model):
     class Meta:
         db_table = "water_customer"
     def __str__(self):
-        return str(self.meter_id)
+        return str(self.username.first_name )+"     "+str(self.username.last_name)
 
     # def __str__(self):
     #     return self.title

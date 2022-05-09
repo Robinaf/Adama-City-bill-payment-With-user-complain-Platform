@@ -33,6 +33,14 @@ class WaterBalanceAdmin(admin.ModelAdmin):
 
 class WaterUserAdmin(UserAdmin):
      readonly_fields = ('prev_reading','current_reading','amount','month','year')
+class WaterAdmin(admin.ModelAdmin):
+     site_header ='Water Admin Area'
+     model= WaterCustomer
+     list_display = ('meter_id', 'username',
+                    )
+
+
+
 
 class WaterAdminArea(AdminSite):
      site_header='Water Admin Area'
@@ -42,5 +50,6 @@ water_site = WaterAdminArea(name='WaterAdmin')
 water_site.register(WaterCustomer)
 water_site.register(WaterEmployee)
 water_site.register(WaterBillInfo)
+admin.site.register(WaterCustomer,WaterAdmin)
 #admin.site.register(WaterBillInfo,WaterUserAdmin)
 admin.site.register(WaterBalance,WaterBalanceAdmin)
