@@ -3,6 +3,9 @@ from django.db.models import IntegerField
 from django.db.models.functions import Cast
 from django.shortcuts import render,redirect
 from .models import WaterBillInfo,WaterCustomer,WaterComplain
+from django.http import HttpResponse
+from .decorators import unauthenticated_user, allowed_users, admin_only
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -44,16 +47,42 @@ def water_reader(request):
 #         'a':a
 #     }
 #     return render(request,'water_admin/water_admin.html',context)
+
+# def complain(request):
+#     if request.method=="POST":
+#         # meter_id = request.user.meter_id
+#         print("-"*50)
+#         print(request.user)
+#         print(request.user.first_name)
+#         print(request.user.meter_id)
+#         # print(meter_id)
+#         print("-"*50)
+#         # complain =request.POST.get('complain')
+#         # wc=WaterCustomer.objects.get(meter_id=meter_id)
+#         # user=WaterCustomer.objects.all()
+#         # # if request.user.meter_id==meter_id:
+#         # complaindetail = WaterComplain(
+#         #      meter_id_id =wc.meter_id,
+#         #      complain=complain
+#         #        )
+#         # complaindetail.save()
+#         # return render(request,'customer/main.html')
+#         # # return HttpResponse('Invalid Credentials...!!!')        
+#     return render(request,'customer/complain1.html')
+
+
 def complain(request):
     if request.method=="POST":
-         meter_id_id =request.POST.get('meter_id_id')
-         complain =request.POST.get('complain')
-         wc=WaterCustomer.objects.get(meter_id=meter_id_id)
-
-         complaindetail = WaterComplain(
-             meter_id_id =wc.meter_id,
+        complain=request.POST.get('complain')
+        x=request.user.username
+        y=WaterCustomer.objects.get(username=x)
+        m=y.meter_id
+        complaindetail = WaterComplain(
+        meter_id_id =m,
              complain=complain
          )
-         complaindetail.save()
-         return render(request,'customer/main.html')
-    return render(request,'customer/complain1.html')
+        complaindetail.save()
+        return render(request,'customer/main.html')
+
+        
+    return render(request,'customer/complain1.html',)

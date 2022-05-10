@@ -6,16 +6,19 @@ from django.db import models
 from users.models import Customer
 from users.models import *
 from django.utils import timezone
-
+from django.contrib.auth.models import UserManager
 # Create your models here.
 class WaterCustomer(models.Model):
     meter_id=models.IntegerField(primary_key=True)
-    username = models.ForeignKey(null=False,max_length=100, on_delete=models.CASCADE, to = Customer)
+    username = models.OneToOneField(Customer,null=False,max_length=100, on_delete=models.CASCADE, )
+    objects = CustomAccountManager()
     
     class Meta:
         db_table = "water_customer"
     def __str__(self):
         return str(self.username.first_name )+"     "+str(self.username.last_name)
+    def __unicode__(self):
+        return self.meter_id
 
     # def __str__(self):
     #     return self.title
@@ -50,6 +53,14 @@ class WaterComplain(models.Model):
         db_table = "water_complain"
     def __str__(self):
         return str(self.meter_id)
+    def __unicode__(self):
+        return self.meter_id
+    # def save(self, *args, **kwargs):
+    #     meter_id = self.request.user.meter_id
+    #     print("-"*50)
+    #     print(meter_id)
+    #     print("-"*50)
+
 class WaterBalance(models.Model):
     balance = models.DecimalField(max_digits=50,default=0.00,decimal_places=2)
     def __str__(self):
