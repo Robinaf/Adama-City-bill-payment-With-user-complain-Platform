@@ -11,6 +11,7 @@ from django.contrib.auth.models import UserManager
 class WaterCustomer(models.Model):
     meter_id=models.IntegerField(primary_key=True)
     username = models.OneToOneField(Customer,null=False,max_length=100, on_delete=models.CASCADE, )
+    
     objects = CustomAccountManager()
     
     class Meta:
@@ -22,10 +23,20 @@ class WaterCustomer(models.Model):
 
     # def __str__(self):
     #     return self.title
-class WaterEmployee(Account):
-    employee_id = models.IntegerField(primary_key=True)
+class WaterTechnician(Account):
+    employee_id = models.IntegerField(null=False,unique=True)
+    # username=models.OneToOneField(Account,null=False,max_length=100,on_delete=models.CASCADE)
     class Meta:
-        db_table = "water_employee"
+        db_table = "water_technician"
+    def __str__(self):
+        return str(self.employee_id)+"  "+str(self.username)
+class WaterReader(Account):
+    employee_id=models.IntegerField(null=False,unique=True)
+    # username=models.OneToOneField(Account,null=False,max_length=100,on_delete=models.CASCADE)
+    class Meta:
+        db_table ="water_reader"
+    def __str__(self):
+        return str(self.employee_id)+"  "+str(self.username)
 class WaterBillInfo(models.Model):
     meter_id=models.ForeignKey(on_delete=models.CASCADE, to=WaterCustomer)
     prev_reading = models.DecimalField(max_digits=50,decimal_places=2,default=0)
