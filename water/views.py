@@ -16,32 +16,47 @@ def water_admin(request):
 def water_reader(request):
 
     if request.method=="POST":
-        x=request.user.username
-        y=WaterCustomer.objects.get(username=x)
-        m=y.meter_id
-        z=m.prev_reading
+        
         meter_id_id =request.POST.get('meter_id_id')
         
         current_reading = request.POST.get('current_reading')
+       
+        # ww=bb.meter_id
+        # x=request.user.username
+        # y=WaterCustomer.objects.get(username=x)
+        # m=y.meter_id
+        
         month = request.POST.get('month')
         year = request.POST.get('year')
+        bb=WaterBillInfo.objects.get(meter_id_id=meter_id_id)
+        prev =bb.prev_reading
         wc = WaterCustomer.objects.get(meter_id=meter_id_id)
-        
+        prev_reading=float(prev)
         # bi= WaterBillInfo.objects.filter(prev_reading=prev_reading)
         # prev_reading=bi.prev_reading
+        current_reading=float(current_reading)
+        # if current_reading<=100:
+            
+
         billinfo = WaterBillInfo(
             meter_id_id = wc.meter_id,
            
              
-            current_reading=current_reading,
+            current_reading=float(current_reading),
             month=month,
             year=year,
 
             # prev_reading = wc.prev_reading,
-            amount = int(current_reading-z) *2
+            
+            amount = (current_reading-prev_reading) *2
+
+               
+           
 
         )
         billinfo.save()
+       
+       
         return redirect ('water_reader')
     
     return render(request,'water_reader/water_reader.html')

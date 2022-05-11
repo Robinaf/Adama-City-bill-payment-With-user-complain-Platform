@@ -81,8 +81,8 @@ class Account(AbstractBaseUser,PermissionsMixin):
     #roles = models.ManyToManyField(Role)
     #role = models.CharField(max_length= 10)
 
-    ROLE_CHOICES = [(1,'Water_Admin'),(2,'Electric_Admin'),(3,'Water_Reader'),(4,'Water_Technician'),(5,'Electric_Reader'),(6,'Electric_Technician'),(7,'Customer')]
-    role=models.PositiveSmallIntegerField(choices=ROLE_CHOICES,blank=True,null = True)
+    ROLE_CHOICES = [('water_reader','Water_Reader'),('water_technician','Water_Technician'),('electric_reader','Electric_Reader'),('electric_technician','Electric_Technician'),('customer','Customer')]
+    role=models.CharField(choices=ROLE_CHOICES,max_length =20,blank=True,null = True)
     objects = CustomAccountManager()
    
     # class Meta:

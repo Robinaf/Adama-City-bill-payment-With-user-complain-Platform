@@ -21,10 +21,10 @@ def allowed_users(allowed_roles=[]):
 				if group =='customer':
 					return redirect('home')
 				
-				elif group =='water_admin':
-					return redirect('wateradmin')
-				elif group =='electric_admin':
-					return redirect('electricadmin')
+				elif group =='water_reader':
+					return redirect('water_reader')
+				elif group =='water_technician':
+					return redirect('water_technician')
 				else:
 					return redirect('login')
 			
