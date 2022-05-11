@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import email
 from enum import unique
 from xml.dom.minidom import CharacterData
@@ -7,6 +8,15 @@ from django.utils.translation import gettext_lazy as _
 #from django.contrib.auth.models import User
 from django.forms import CharField, DecimalField, EmailField
 from django.contrib.auth.models import AbstractBaseUser,UserManager,PermissionsMixin,BaseUserManager
+from users import validators
+from django.core.validators import RegexValidator
+from django.core.exceptions import ValidationError
+
+
+
+
+only_letters = RegexValidator(r'^[A-ZÁÉÍÓÚÑÇÄËÏÖÜa-zñáéíóúäëïöüç\s]*$',
+                              u'Only letters allowed.')
 #from water.models import WaterCustomer
 
 # Create your models here.
@@ -54,9 +64,9 @@ class CustomAccountManager(BaseUserManager):
 class Account(AbstractBaseUser,PermissionsMixin):
     #user= models.OneToOneField(User,null = True, blank = True, on_delete=models.CASCADE)
     username = models.CharField(null=False,max_length=100,primary_key = True)
-    first_name = models.CharField(max_length=50,null=True)
-    middle_name = models.CharField(max_length=50,null=True)
-    last_name = models.CharField(max_length=50,null=True)
+    first_name = models.CharField(max_length=50,null=True,validators=[only_letters])
+    middle_name = models.CharField(max_length=50,null=True,validators=[only_letters])
+    last_name = models.CharField(max_length=50,null=True,validators=[only_letters])
     email =  models.EmailField(max_length=50,null=True)
     #gender = models.CharField(max_length=10,null=True)
     #age = models.IntegerField(null=True)

@@ -68,6 +68,7 @@ def registerPage(request):
         else:
             print("Not registered")
             print(form.errors)
+            return HttpResponse(form.errors)
 
     context = {'form': form}
     return render(request, 'signup.html', context)
