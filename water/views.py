@@ -14,7 +14,12 @@ def water_admin(request):
 
     return render(request,'water_admin/index.html',{'WaterCustomer':wc})
 def water_reader(request):
+
     if request.method=="POST":
+        x=request.user.username
+        y=WaterCustomer.objects.get(username=x)
+        m=y.meter_id
+        z=m.prev_reading
         meter_id_id =request.POST.get('meter_id_id')
         
         current_reading = request.POST.get('current_reading')
@@ -33,7 +38,7 @@ def water_reader(request):
             year=year,
 
             # prev_reading = wc.prev_reading,
-            amount = int(current_reading) *2
+            amount = int(current_reading-z) *2
 
         )
         billinfo.save()

@@ -10,7 +10,6 @@ from django.contrib.auth.admin import UserAdmin
 
 class CompanyAdminConfig(UserAdmin):
     site_header = 'My Super Administration'
-    model =CompanyAdmin,
     search_fields = ('email', 'username', 'first_name',)
     search_fields = ('email', 'username', 'first_name',)
     list_filter = ('email', 'username', 'first_name','last_name', 'is_active', 'is_staff',)
@@ -69,7 +68,7 @@ class CustomerAdminConfig(admin.ModelAdmin):
 #     fields =[ ]
     
 # admin_site = UserAdminConfig(Account,'admin_site')
-admin.site.register(CompanyAdmin,CompanyAdminConfig)
+# admin.site.register(CompanyAdmin,CompanyAdminConfig)
 
 admin.site.register(Customer,CustomerAdminConfig)
 
