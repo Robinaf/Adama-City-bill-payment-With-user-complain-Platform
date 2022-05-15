@@ -35,10 +35,14 @@ def water_reader(request):
             prev_read = float(WaterBillInfo.objects.filter(meter_id=meter_id_id).order_by('-date')[0].current_reading)
         except:
             prev_read = 0
+        ################################################
+         # when reading is less than 50
+        #################################################
         if current_reading-prev_read <= 50:
             print('is less tan 50')
 
             new_bill = WaterBillInfo.objects.create(
+                meter_id_id = wc.meter_id,
                 current_reading=float(current_reading), 
                 amount=(current_reading-prev_read)*2, 
                 prev_reading=prev_read,
@@ -46,6 +50,9 @@ def water_reader(request):
                 year=year,
 
             )
+         ################################################
+         # when reading is less than 100
+        #################################################
         elif current_reading-prev_read <= 100:
             print('is less tan 100')
             new_bill = WaterBillInfo.objects.create(
