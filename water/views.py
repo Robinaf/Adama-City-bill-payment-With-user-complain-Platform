@@ -19,7 +19,7 @@ def water_reader(request):
         
         meter_id_id =request.POST.get('meter_id_id')
         
-        current_reading = request.POST.get('current_reading')
+        current_reading = float(request.POST.get('current_reading'))
        
         # ww=bb.meter_id
         # x=request.user.username
@@ -28,33 +28,64 @@ def water_reader(request):
         
         month = request.POST.get('month')
         year = request.POST.get('year')
-        bb=WaterBillInfo.objects.get(meter_id_id=meter_id_id)
-        prev =bb.prev_reading
+        # bb=WaterBillInfo.objects.get(meter_id_id=meter_id_id)
+        # prev =bb.prev_reading
         wc = WaterCustomer.objects.get(meter_id=meter_id_id)
-        prev_reading=float(prev)
-        # bi= WaterBillInfo.objects.filter(prev_reading=prev_reading)
-        # prev_reading=bi.prev_reading
-        current_reading=float(current_reading)
-        # if current_reading<=100:
+        try:
+            prev_read = float(WaterBillInfo.objects.filter(meter_id=meter_id_id).order_by('-date')[0].current_reading)
+        except:
+            prev_read = 0
+        if current_reading-prev_read <= 50:
+            print('is less tan 50')
+
+            new_bill = WaterBillInfo.objects.create(
+                current_reading=float(current_reading), 
+                amount=(current_reading-prev_read)*2, 
+                prev_reading=prev_read,
+                month=month,
+                year=year,
+
+            )
+        elif current_reading-prev_read <= 100:
+            print('is less tan 100')
+            new_bill = WaterBillInfo.objects.create(
+                meter_id_id = wc.meter_id,
+                current_reading=float(current_reading), 
+                amount=(current_reading-prev_read)*3, 
+                prev_reading=prev_read,
+                month=month,
+                year=year,
+
+            )
+        else:
+            print(current_reading)
+            print(prev_read)
+            pass
+        
+        # prev_reading=float(prev)
+        # # bi= WaterBillInfo.objects.filter(prev_reading=prev_reading)
+        # # prev_reading=bi.prev_reading
+        # current_reading=float(current_reading)
+        # # if current_reading<=100:
             
 
-        billinfo = WaterBillInfo(
-            meter_id_id = wc.meter_id,
+        # billinfo = WaterBillInfo(
+        #     meter_id_id = wc.meter_id,
            
              
-            current_reading=float(current_reading),
-            month=month,
-            year=year,
+        #     current_reading=float(current_reading),
+        #     month=month,
+        #     year=year,
 
-            # prev_reading = wc.prev_reading,
+        #     # prev_reading = wc.prev_reading,
             
-            amount = (current_reading-prev_reading) *2
+        #     amount = (current_reading-prev_reading) *2
 
                
            
 
-        )
-        billinfo.save()
+        # )
+        # billinfo.save()
        
        
         return redirect ('water_reader')

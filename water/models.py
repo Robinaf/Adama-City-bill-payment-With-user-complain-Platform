@@ -48,7 +48,6 @@ class WaterBillInfo(models.Model):
     month=models.CharField(max_length=50,choices=Month_choice,blank=True,null = True)
     year = models.IntegerField(null=True)
     amount = models.DecimalField(max_digits=50,decimal_places=2,null=True)
-    
     class Meta:
         db_table = "waterbillinfo"
     def __str__(self):
