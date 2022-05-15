@@ -29,7 +29,10 @@ from django.contrib.auth.admin import UserAdmin
 
 class WaterBalanceAdmin(admin.ModelAdmin):
     model = WaterBalance
+
     readonly_fields = ('balance',)
+    def has_change_permission(self, request, obj=None):
+        return False
 class WaterComplainAdmin(admin.ModelAdmin):
      model=WaterComplain
      readonly_fields = ('complain',)
@@ -57,11 +60,18 @@ class WaterAdmin(admin.ModelAdmin):
          ),
     )
 class WaterBillAdmin(admin.ModelAdmin):
-     readonly_fields = ('prev_reading','current_reading','amount','month','year')
+     model =WaterBillInfo
+     readonly_fields = ('prev_reading','current_reading','amount','month','year','is_paid')
+     def has_change_permission(self, request, obj=None):
+        return False
+class WaterComplainAdmin(admin.ModelAdmin):
+     model = WaterComplain
+     readonly_fields = ('complain','status','date')
+     def has_change_permission(self, request, obj=None):
+        return False
+class AssignComplainAdmin(admin.ModelAdmin):
+     model: AssignComplain
 
-
-
-    
 
 
 
@@ -82,6 +92,9 @@ admin.site.register(WaterReader,WaterUserAdmin)
 admin.site.register(WaterTechnician,WaterUserAdmin)
 admin.site.register(WaterBillInfo,WaterBillAdmin)
 admin.site.register(WaterBalance,WaterBalanceAdmin)
+admin.site.register(WaterComplain,WaterComplainAdmin)
+admin.site.register(AssignComplain,AssignComplainAdmin)
+
 
 
 

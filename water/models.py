@@ -53,6 +53,7 @@ class WaterBillInfo(models.Model):
     def __str__(self):
         return str(self.meter_id)
 
+
 class WaterComplain(models.Model):
     meter_id = models.ForeignKey(on_delete=models.CASCADE, to=WaterCustomer)
     complain = models.TextField()
@@ -65,6 +66,12 @@ class WaterComplain(models.Model):
         return str(self.meter_id)
     def __unicode__(self):
         return self.meter_id
+class AssignComplain(models.Model):
+    meter_id=models.ForeignKey(on_delete = models.CASCADE , to=WaterComplain)
+    assign_to =models.ForeignKey(on_delete=models.CASCADE, to =WaterTechnician)
+    def __str__(self):
+        return str(self.assign_to)
+
     # def save(self, *args, **kwargs):
     #     meter_id = self.request.user.meter_id
     #     print("-"*50)
