@@ -6,6 +6,7 @@ from .models import WaterBillInfo,WaterCustomer,WaterComplain
 from django.http import HttpResponse
 from .decorators import unauthenticated_user, allowed_users, admin_only
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
 
 
 # Create your views here.
@@ -13,6 +14,7 @@ def water_admin(request):
     wc=WaterCustomer.objects.all()
 
     return render(request,'water_admin/index.html',{'WaterCustomer':wc})
+@login_required
 def water_reader(request):
 
     if request.method=="POST":
@@ -38,7 +40,10 @@ def water_reader(request):
         ################################################
          # when reading is less than 50
         #################################################
-        if current_reading-prev_read <= 50:
+        if current_reading-prev_read <=0:
+             print('current cannot be less than previous reading')
+
+        elif current_reading-prev_read <= 50:
             print('is less tan 50')
 
             new_bill = WaterBillInfo.objects.create(
@@ -64,6 +69,8 @@ def water_reader(request):
                 year=year,
 
             )
+        elif current_reading < prev_read:
+            print('current cannot be less than previous reading')
         else:
             print(current_reading)
             print(prev_read)
@@ -128,19 +135,52 @@ def water_reader(request):
 #         # # return HttpResponse('Invalid Credentials...!!!')        
 #     return render(request,'customer/complain1.html')
 
-
+@login_required
 def complain(request):
     if request.method=="POST":
+        phone_number=request.POST.get('phone_number')
         complain=request.POST.get('complain')
         x=request.user.username
         y=WaterCustomer.objects.get(username=x)
         m=y.meter_id
         complaindetail = WaterComplain(
         meter_id_id =m,
-             complain=complain
+             complain=complain,
+             phone_number=phone_number
          )
         complaindetail.save()
         return render(request,'customer/main.html')
 
         
     return render(request,'customer/complain1.html',)
+@login_required
+def water_technician(request):
+    return render(request,'water_technician/water_technician.html')
+def reportsolved(request):
+    if request.method =="POST":      
+        x=request.user.username
+        id=int(request.POST.get('id'))
+        y=WaterCustomer.objects.get(username=x)
+        meter_id=y.meter_id
+        bb=WaterComplain.objects.get(id=id)
+        print(bb.meter_id_id)
+        print(meter_id)
+        print(type(meter_id), int(bb.meter_id_id))
+        if bb.meter_id_id==meter_id:
+            bb.is_solved =True
+            bb.save()  
+        else:
+            print("meter id doesn't match")
+
+
+        
+        # complaindetail = WaterComplain(
+        #     meter_id_id =m,
+        #      s=True
+             
+        #  )
+        # complaindetail.save()
+        return render(request,'customer/main.html')
+
+
+    return render(request,'customer/reportsolved.html')

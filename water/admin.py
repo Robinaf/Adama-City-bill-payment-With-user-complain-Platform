@@ -59,18 +59,24 @@ class WaterAdmin(admin.ModelAdmin):
             }
          ),
     )
+     list_display =('meter_id','username',)
 class WaterBillAdmin(admin.ModelAdmin):
      model =WaterBillInfo
      readonly_fields = ('prev_reading','current_reading','amount','month','year','is_paid')
+     list_display =('id','meter_id','prev_reading','current_reading','amount','month','year','is_paid')
      def has_change_permission(self, request, obj=None):
         return False
 class WaterComplainAdmin(admin.ModelAdmin):
      model = WaterComplain
-     readonly_fields = ('complain','status','date')
+     readonly_fields = ('complain','is_solved','date')
+     # list_display = ('email', 'username', 'first_name',
+     #                'is_active', 'is_staff','balance',)
+     list_display =('id','meter_id','complain','date','is_solved','phone_number')
      def has_change_permission(self, request, obj=None):
         return False
 class AssignComplainAdmin(admin.ModelAdmin):
      model: AssignComplain
+     list_display = ('complain_id','assign_to')
 
 
 

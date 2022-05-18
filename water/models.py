@@ -17,7 +17,7 @@ class WaterCustomer(models.Model):
     class Meta:
         db_table = "water_customer"
     def __str__(self):
-        return str(self.username.first_name )+"     "+str(self.username.last_name)
+        return str(self.meter_id )
     def __unicode__(self):
         return self.meter_id
 
@@ -55,19 +55,21 @@ class WaterBillInfo(models.Model):
 
 
 class WaterComplain(models.Model):
+    id =models.AutoField(primary_key=True)
     meter_id = models.ForeignKey(on_delete=models.CASCADE, to=WaterCustomer)
     complain = models.TextField()
     date = models.DateField(default=timezone.now)
-    status = models.CharField(max_length=50,null=True,default='not solved')
+    is_solved = models.CharField(max_length=50,default=False )#null=True,default='not solved')
+    phone_number=models.IntegerField(null=True)
     
     class Meta:
         db_table = "water_complain"
     def __str__(self):
-        return str(self.meter_id)
+        return str(self.id)
     def __unicode__(self):
         return self.meter_id
 class AssignComplain(models.Model):
-    meter_id=models.ForeignKey(on_delete = models.CASCADE , to=WaterComplain)
+    complain_id=models.ForeignKey(on_delete = models.CASCADE , to=WaterComplain)
     assign_to =models.ForeignKey(on_delete=models.CASCADE, to =WaterTechnician)
     def __str__(self):
         return str(self.assign_to)

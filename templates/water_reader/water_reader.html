@@ -1,6 +1,6 @@
+{% extends 'water_reader/waterreaderbase.html' %}  
+{% block content %}
 {%load static%}
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,7 +19,7 @@
       <div class="mx-auto" style="width: 200px">
       <div class="container">
         <div class="row">
-          <form action="{% url 'water_reader'%}" method="post">
+          <form name="myForm" action="{% url 'water_reader'%}" method="post">
             {% csrf_token %}
           <div class="col-md">
             <input name="meter_id_id" type="number" id="formControlLg" class="form-control form-control-lg" required />
@@ -36,8 +36,18 @@
         </form>
       </div>
     </div>
+    
 
 
-     <Script src = "{% static '/js/mdb.min.js' %}"></Script>
+     <Script src = "{% static '/js/mdb.min.js' %}">
+      function validateForm() {
+        let x = document.forms["myForm"]["meter_id_id"].value;
+        if (x == " ") {
+          alert("Meter id  must be filled out");
+          return false;
+        }
+      }
+     </Script>
 </body>
 </html>
+{% endblock%}
