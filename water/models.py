@@ -58,7 +58,7 @@ class WaterComplain(models.Model):
     id =models.AutoField(primary_key=True)
     meter_id = models.ForeignKey(on_delete=models.CASCADE, to=WaterCustomer)
     complain = models.TextField()
-    date = models.DateField(default=timezone.now)
+    date = models.DateTimeField(default=timezone.now)
     is_solved = models.CharField(max_length=50,default=False )#null=True,default='not solved')
     phone_number=models.IntegerField(null=True)
     

@@ -34,7 +34,12 @@ def water_reader(request):
         # prev =bb.prev_reading
         wc = WaterCustomer.objects.get(meter_id=meter_id_id)
         try:
+            # prevv_read = WaterBillInfo.objects.filter(meter_id=meter_id_id).order_by('-date')[0]
+            # prev_read=int(prevv_read.current_reading)
             prev_read = float(WaterBillInfo.objects.filter(meter_id=meter_id_id).order_by('-date')[0].current_reading)
+            # prevv_read = float(WaterBillInfo.objects.filter(meter_id=meter_id_id))
+            # prev_read =prevv_read.order_by('-date')[0].current_reading
+            print(prev_read)
         except:
             prev_read = 0
         ################################################
@@ -49,7 +54,7 @@ def water_reader(request):
             new_bill = WaterBillInfo.objects.create(
                 meter_id_id = wc.meter_id,
                 current_reading=float(current_reading), 
-                amount=(current_reading-prev_read)*2, 
+                amount=(current_reading-prev_read)*0.2730, 
                 prev_reading=prev_read,
                 month=month,
                 year=year,
@@ -63,7 +68,18 @@ def water_reader(request):
             new_bill = WaterBillInfo.objects.create(
                 meter_id_id = wc.meter_id,
                 current_reading=float(current_reading), 
-                amount=(current_reading-prev_read)*3, 
+                amount=(current_reading-prev_read)*0.6644, 
+                prev_reading=prev_read,
+                month=month,
+                year=year,
+
+            )
+        elif current_reading-prev_read <= 200:
+            print('is less tan 200')
+            new_bill = WaterBillInfo.objects.create(
+                meter_id_id = wc.meter_id,
+                current_reading=float(current_reading), 
+                amount=(current_reading-prev_read)*1.3436, 
                 prev_reading=prev_read,
                 month=month,
                 year=year,

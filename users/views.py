@@ -93,9 +93,7 @@ def user_login(request):
                      return redirect('water_technician')
                 else:
                     return render(request,'Account/login.html')
-
-            
-
+                       
             # if user is not None and user.role==7:
             #     login(request,user)
             #     request.session.set_expiry(30)

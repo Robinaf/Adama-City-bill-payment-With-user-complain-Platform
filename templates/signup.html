@@ -171,41 +171,41 @@ form .user-details .input-box{
         
         <div class="user-details">
           <div class="input-box">
-            <span class="details">First Name</span>
+            <span class="details">First Name</span required>
             {{ form.first_name }}
           </div>
           <div class="input-box">
-            <span class="details">Middle Name</span>
+            <span class="details">Middle Name</span required>
             {{ form.middle_name }}
            
           </div>
           <div class="input-box">
-            <span class="details">Last Name</span>
+            <span class="details">Last Name</span required>
             {{ form.last_name }}
           </div>
           <div class="input-box">
-            <span class="details">Username</span>
+            <span class="details">Username</span required>
             {{ form.username }}
           </div>
           <div class="input-box">
-            <span class="details">age</span>
+            <span class="details">age</span required>
             
             {{ form.age }}
           </div>
           <div class="input-box">
-            <span class="details">Email</span>
+            <span class="details">Email</span required>
             {{ form.email }}
           </div>
           <div class="input-box">
-            <span class="details">House Number</span>
+            <span class="details">House Number</span required>
             {{ form.house_number }}
           </div>
           <div class="input-box">
-            <span class="details">Password</span>
+            <span class="details">Password</span required>
             {{ form.password1 }}
           </div>
           <div class="input-box">
-            <span class="details">Confirm Password</span>
+            <span class="details">Confirm Password</span required>
             <span id='message'></span>
             {{ form.password2 }}
           </div>
@@ -215,7 +215,7 @@ form .user-details .input-box{
           <input type="radio" name="gender" value="Female" id="dot-2">
           
           
-          <span class="gender-title">Gender</span>
+          <span class="gender-title">Gender</span required>
           <div class="category">
             <label for="dot-1">
             <span class="dot one"></span>
@@ -235,6 +235,7 @@ form .user-details .input-box{
         <div class="button">
           <input type="submit" value="Sign up"  >
         </div>
+        
         <script>
           var check_pass = function() {
             if (document.getElementById('password').value ==
@@ -247,7 +248,17 @@ form .user-details .input-box{
             }
           }
     </script>
+
       </form>
+      {%for msg in messages%}
+        {% if msg.tags == 'success' %}
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script>
+          var m = "{{ msg }}";
+          swal("Perfect !", m, "success")
+        </script>
+        {% endif %}
+        {% endfor %}
     </div>
   </div>
 
