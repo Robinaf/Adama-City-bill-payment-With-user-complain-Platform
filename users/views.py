@@ -92,8 +92,13 @@ def user_login(request):
                 elif a=='water_technician':
                      login(request,user)
                      return redirect('water_technician')
-                else:
-                    return render(request,'Account/login.html')
+                # else:
+                #     return render(request,'Account/login.html')
+            else:
+                messages.warning(request, 'Username or password is not correct !!')
+                return redirect(request,'login.html')
+            
+
                        
            
         return render(request, 'login.html')

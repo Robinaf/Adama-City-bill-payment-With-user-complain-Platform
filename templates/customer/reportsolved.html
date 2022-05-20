@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'customer/customerbase.html' %}
+{% block content %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,13 +8,18 @@
 </head>
 <body>
     <form action=" " method="post">
+        
         {% csrf_token %}
-        <input name ="id" type="number" id="form3Example1c" class="form-control" required/>
-        <label class="form-label" for="form3Example1c">id</label>
-    Welcome to report solved complain
-    <button>
-        confirm solved
-    </button>
+        <div class="d-flex flex-row align-items-center mb-9">
+            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+            <div class="form-outline  mb-10">
+              <input name ="id" type="number" id="form3Example1c" class="form-control" required/>
+              <label class="form-label" for="form3Example1c">enter Complain Id Here</label>
+            </div>
+          </div>
+      <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+        <button type="submit" class="btn btn-primary btn-lg">Confirm</button>
+      </div>
 </form>
 </body>
-</html>
+{%endblock content %} 

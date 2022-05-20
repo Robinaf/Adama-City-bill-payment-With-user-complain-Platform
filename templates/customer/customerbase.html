@@ -39,7 +39,7 @@
 		</div>
 		<ul class="list-unstyled component m-0">
 		  <li class="active">
-		  <a href="#" class="dashboard"><i class="material-icons">settings</i>water Bill </a>
+		  <a href="{% url 'viewwaterbill' %}" class="dashboard"><i class="material-icons">settings</i>water Bill </a>
 		  </li>
 		  
 		  <li class="dropdown">
@@ -48,9 +48,9 @@
 		  <i class="material-icons" id="watercomplain">mail</i>Water complain
 		  </a>
 		  <ul class="collapse list-unstyled menu" id="homeSubmenu1">
-		     <li><a href="{% url 'complain' %}" id="complain">complain</a></li>
-			 <li><a href="{% url 'viewbill' %}">view water bill</a></li>
-			 <li><a href="#">layout 3</a></li>
+		     <li><a href="{% url 'complain' %}" id="complain">report complain</a></li>
+			 <li><a href="{% url 'viewwatercomplain' %}">view complain</a></li>
+			 <li><a href="{% url 'reportwatersolved'%}">Report Solved complain</a></li>
 		  </ul>
 		  </li>
 		  
@@ -73,9 +73,9 @@
 		  <i class="material-icons">mail</i>Electric Complain
 		  </a>
 		  <ul class="collapse list-unstyled menu" id="homeSubmenu3">
-		     <li><a href="#">Pages 1</a></li>
-			 <li><a href="#">Pages 2</a></li>
-			 <li><a href="#">Pages 3</a></li>
+		     <li><a href="#">report complain</a></li>
+			 <li><a href="#">view Complain</a></li>
+			 <li><a href="#">report solved complain</a></li>
 		  </ul>
 		  </li>
 		  
@@ -131,10 +131,10 @@
 		  
 		   
 		  <li class="">
-		  <a href="#" class=""><i class="material-icons">date_range</i>calender </a>
+		  <a href="{% url 'waterpayment' %}" class=""><i class="material-icons">date_range</i>water payement area </a>
 		  </li>
 		  <li class="">
-		  <a href="#" class=""><i class="material-icons">perm_identity</i>sign out</a>
+		  <a href="{% url 'logout' %}" class=""><i class="material-icons">perm_identity</i>sign out</a>
 		  </li>
 		
 		</ul>

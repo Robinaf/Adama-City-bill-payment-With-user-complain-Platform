@@ -31,8 +31,14 @@ class WaterBalanceAdmin(admin.ModelAdmin):
     model = WaterBalance
 
     readonly_fields = ('balance',)
+    search_fields= []
+    def has_add_permission(self, request, obj=None):
+        return False
     def has_change_permission(self, request, obj=None):
         return False
+    def has_delete_permission(self, request, obj=None):
+        return False
+   
 class WaterComplainAdmin(admin.ModelAdmin):
      model=WaterComplain
      readonly_fields = ('complain',)
@@ -66,6 +72,10 @@ class WaterBillAdmin(admin.ModelAdmin):
      list_display =('id','meter_id','prev_reading','current_reading','amount','is_paid')
      def has_change_permission(self, request, obj=None):
         return True
+class WaterReaderAdmin(admin.ModelAdmin):
+     model: WaterReader
+     search_fields= [ ]
+
 class WaterComplainAdmin(admin.ModelAdmin):
      model = WaterComplain
      readonly_fields = ('complain','is_solved','date')
@@ -74,6 +84,9 @@ class WaterComplainAdmin(admin.ModelAdmin):
      list_display =('id','meter_id','complain','date','is_solved','phone_number')
      def has_change_permission(self, request, obj=None):
         return False
+     def has_add_permission(self, request, obj=None):
+        return False
+
 class AssignComplainAdmin(admin.ModelAdmin):
      model: AssignComplain
      list_display = ('complain_id','assign_to')

@@ -68,6 +68,24 @@
                         
                         
                     </table>
+                    {%for msg in messages%}
+                    {% if msg.tags == 'success' %}
+                    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                    <script>
+                      var m = "{{ msg }}";
+                      swal("Perfect !", m, "success")
+                    </script>
+                    {% endif %}
+                    {% endfor %}
+                    {%for ms in messages%}
+                    {% if ms.tags == 'warning' %}
+                    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                    <script>
+                      var m = "{{ ms }}";
+                      swal("Warning", m, "warning")
+                    </script>
+                    {% endif %}
+                    {% endfor %}
                     
                     <div class="clearfix">
                         <div class="hint-text">showing <b>5</b> out of <b>25</b></div>

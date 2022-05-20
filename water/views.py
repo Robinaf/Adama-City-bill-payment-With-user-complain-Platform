@@ -3,7 +3,8 @@ from pyexpat import model
 from django.db.models import IntegerField
 from django.db.models.functions import Cast
 from django.shortcuts import render,redirect
-from .models import WaterBillInfo,WaterCustomer,WaterComplain
+from pymysql import NULL
+from .models import WaterBalance, WaterBillInfo,WaterCustomer,WaterComplain
 from django.http import HttpResponse
 from users.models import Customer
 from .decorators import unauthenticated_user, allowed_users, admin_only
@@ -156,23 +157,32 @@ def complain(request):
     if request.method=="POST":
         phone_number=request.POST.get('phone_number')
         complain=request.POST.get('complain')
-        x=request.user.username
-        y=WaterCustomer.objects.get(username=x)
-        m=y.meter_id
-        complaindetail = WaterComplain(
-        meter_id_id =m,
+        if complain ==NULL:
+            messages.warning(request,'your complain is impty')
+            return(request,'customer/complain1.html')
+        else:
+            x=request.user.username
+            y=WaterCustomer.objects.get(username=x)
+            m=y.meter_id
+            complaindetail = WaterComplain(
+            meter_id_id =m,
              complain=complain,
              phone_number=phone_number
-         )
-        complaindetail.save()
-        return render(request,'customer/main.html')
+                    )
+            complaindetail.save()
+            messages.success(request,'Complain sent successfully')
+            return render(request,'customer/viewwatercomplain.html')
 
         
+
+        
+
+   
     return render(request,'customer/complain1.html',)
 @login_required
 def water_technician(request):
     return render(request,'water_technician/water_technician.html')
-def reportsolved(request):
+def reportwatersolved(request):
     if request.method =="POST":      
         x=request.user.username
         id=int(request.POST.get('id'))
@@ -196,11 +206,12 @@ def reportsolved(request):
              
         #  )
         # complaindetail.save()
-        return render(request,'customer/main.html')
+        messages.success(request, 'Solution reported successfully')
+        return render(request,'customer/viewwaterbill.html')
 
 
     return render(request,'customer/reportsolved.html')
-def viewbill(request):
+def viewwaterbill(request):
     x=request.user.username
     y=WaterCustomer.objects.get(username=x)
     m=y.meter_id
@@ -210,7 +221,7 @@ def viewbill(request):
             
         }
    
-    return render(request,'customer/main1.html',context)
+    return render(request,'customer/viewwaterbill.html',context)
     
 def waterpayment(request):
     if request.method == "POST":
@@ -224,19 +235,26 @@ def waterpayment(request):
         amountt= WaterBillInfo.objects.filter(meter_id_id=mm).order_by('-date')[0].amount
         print(amountt)
         status = WaterBillInfo.objects.filter(meter_id_id=mm).order_by('-date')[0].is_paid
+        waterbalance =WaterBalance.objects.get(id =2)
+        print(waterbalance.balance)
+
+
         
         print(status)
         payed =y-amountt
+        
         print(payed)
         if status == False:
-            if payed>=0:              
+            if payed>=0: 
+                waterbalance.balance += amountt             
                 billinfo.is_paid=True
                 customer.balance =payed
                 billinfo.save()
                 customer.save()
+                waterbalance.save()
                 messages.success(
                 request, "You paid successfully ")
-                return render(request,'customer/customerbase.html')
+                return render(request,'customer/viewwaterbill.html')
                 
 
 
@@ -246,11 +264,22 @@ def waterpayment(request):
                 # billinfo.save()
 
                 # cus.save() 
-               
+        messages.warning(request,'It is already paid')
+        return render(request,'customer/viewwaterbill.html')
+
         
     
     return render(request, 'customer/payment.html')            
-       
+def viewwatercomplain(request):
+    x=request.user.username
+    y= WaterCustomer.objects.get(username=x)
+    watercomplaindata = WaterComplain.objects.filter(meter_id_id =y)
+    
+    context = {
+        'watercomplaindata':watercomplaindata
+    }
+    
+    return render(request,'customer/viewwatercomplain.html',context)
 
     
 

@@ -85,6 +85,15 @@
         </script>
         {% endif %}
         {% endfor %}
+        {%for ms in messages%}
+        {% if ms.tags == 'warning' %}
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script>
+          var m = "{{ ms }}";
+          swal("wrong input", m, "warning")
+        </script>
+        {% endif %}
+        {% endfor %}
             </div>
           </div>
         </div>
