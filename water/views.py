@@ -1,12 +1,15 @@
 from multiprocessing import context
+from pyexpat import model
 from django.db.models import IntegerField
 from django.db.models.functions import Cast
 from django.shortcuts import render,redirect
 from .models import WaterBillInfo,WaterCustomer,WaterComplain
 from django.http import HttpResponse
+from users.models import Customer
 from .decorators import unauthenticated_user, allowed_users, admin_only
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 
 
 # Create your views here.
@@ -56,8 +59,7 @@ def water_reader(request):
                 current_reading=float(current_reading), 
                 amount=(current_reading-prev_read)*0.2730, 
                 prev_reading=prev_read,
-                month=month,
-                year=year,
+               
 
             )
          ################################################
@@ -70,8 +72,7 @@ def water_reader(request):
                 current_reading=float(current_reading), 
                 amount=(current_reading-prev_read)*0.6644, 
                 prev_reading=prev_read,
-                month=month,
-                year=year,
+               
 
             )
         elif current_reading-prev_read <= 200:
@@ -81,8 +82,7 @@ def water_reader(request):
                 current_reading=float(current_reading), 
                 amount=(current_reading-prev_read)*1.3436, 
                 prev_reading=prev_read,
-                month=month,
-                year=year,
+                
 
             )
         elif current_reading < prev_read:
@@ -200,3 +200,60 @@ def reportsolved(request):
 
 
     return render(request,'customer/reportsolved.html')
+def viewbill(request):
+    x=request.user.username
+    y=WaterCustomer.objects.get(username=x)
+    m=y.meter_id
+    billdata=WaterBillInfo.objects.filter(meter_id_id = y)
+    context = {
+             'billdata': billdata
+            
+        }
+   
+    return render(request,'customer/main1.html',context)
+    
+def waterpayment(request):
+    if request.method == "POST":
+        x=request.user.username      
+        c=WaterCustomer.objects.get(username=x)
+        mm=c.meter_id
+        customer =Customer.objects.get(username=x)
+        y=customer.balance
+        print(y)
+        billinfo =WaterBillInfo.objects.get(meter_id_id =c)
+        amountt= WaterBillInfo.objects.filter(meter_id_id=mm).order_by('-date')[0].amount
+        print(amountt)
+        status = WaterBillInfo.objects.filter(meter_id_id=mm).order_by('-date')[0].is_paid
+        
+        print(status)
+        payed =y-amountt
+        print(payed)
+        if status == False:
+            if payed>=0:              
+                billinfo.is_paid=True
+                customer.balance =payed
+                billinfo.save()
+                customer.save()
+                messages.success(
+                request, "You paid successfully ")
+                return render(request,'customer/customerbase.html')
+                
+
+
+                # billinfo=WaterBillInfo( 
+                #     is_paid =True)
+                # cus=Customer(balance=payed)
+                # billinfo.save()
+
+                # cus.save() 
+               
+        
+    
+    return render(request, 'customer/payment.html')            
+       
+
+    
+
+
+    
+    

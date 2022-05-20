@@ -20,6 +20,7 @@ from .forms import CreateUserForm
 #from .models import Customer
 #from .filters import OrderFilter
 from .decorators import unauthenticated_user, allowed_users, admin_only
+from water.models import *
 
 
 # Create your views here.
@@ -94,29 +95,7 @@ def user_login(request):
                 else:
                     return render(request,'Account/login.html')
                        
-            # if user is not None and user.role==7:
-            #     login(request,user)
-            #     request.session.set_expiry(30)
-            #     return redirect('home')
-            # elif user is not None and user.role==1:
-            #     login(request,user)
-            #     return redirect('wateradmin')
-            # elif user is not None and user.role==2:
-            #     login(request,user)
-            #     return redirect('electricadmin')
-            # elif user is not None and user.role==3:
-            #     login(request,user)
-            #     return redirect('waterreader')
-            # elif user is not None and user.role==4:
-            #     login(request,user)
-            #     return redirect('watertechnician')
-            # elif user is not None and user.role==5:
-            #     login(request,user)
-            #     return redirect('electricreader')
-            # elif user is not None and user.role==6:
-            #     login(request,user)
-            #     return redirect('electrictechnician')
-            # return HttpResponse('Invalid Credentials...!!!')
+           
         return render(request, 'login.html')
     # else:
     #     return redirect('home')
@@ -131,5 +110,14 @@ def home(request):
 def user_logout(request):
    logout(request)
    return redirect('login')
+######################## Payment##########################
+
+       
+        
+
+       
+
+
+
 
 

@@ -1,0 +1,15 @@
+{% extends 'customer/customerbase.html' %}
+{% block content %}
+<body>
+    <form action=""  method="post">
+        {% csrf_token %}
+        <h4> perform your payment here</h4>
+        <div class="button">
+            <input type="submit" value="Pay here"  >
+          </div>
+
+    </form>
+  
+
+</body>
+{%endblock content%}

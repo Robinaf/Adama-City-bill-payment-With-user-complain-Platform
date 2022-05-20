@@ -49,7 +49,7 @@
 		  </a>
 		  <ul class="collapse list-unstyled menu" id="homeSubmenu1">
 		     <li><a href="{% url 'complain' %}" id="complain">complain</a></li>
-			 <li><a href="#">layout 2</a></li>
+			 <li><a href="{% url 'viewbill' %}">view water bill</a></li>
 			 <li><a href="#">layout 3</a></li>
 		  </ul>
 		  </li>
@@ -61,7 +61,7 @@
 		  <i class="material-icons">settings</i>Electric Bill
 		  </a>
 		  <ul class="collapse list-unstyled menu" id="homeSubmenu2">
-		     <li><a href="#">Apps 1</a></li>
+		     <li><a href="{% url 'waterpayment' %}">complain</a></li>
 			 <li><a href="#">Apps 2</a></li>
 			 <li><a href="#">Apps 3</a></li>
 		  </ul>
@@ -247,6 +247,15 @@
 		     {% block content %}
 
 			 {% endblock %}
+			 {%for msg in messages%}
+			 {% if msg.tags == 'success' %}
+			 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+			 <script>
+			   var m = "{{ msg }}";
+			   swal("Perfect !", m, "success")
+			 </script>
+			 {% endif %}
+			 {% endfor %}
 		      
 		  
 		    <!------main-content-end-----------> 

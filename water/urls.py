@@ -7,5 +7,7 @@ urlpatterns=[
     path('water_admin',views.water_admin,name='water_admin'),
     path('water_technician',views.water_technician, name='water_technician'),
     path('reportsolved',views.reportsolved,name='reportsolved'),
+    path('viewbill',views.viewbill,name='viewbill'),
+    path('waterpayment',views.waterpayment, name='waterpayment'),
 
 ]

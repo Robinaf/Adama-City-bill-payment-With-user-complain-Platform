@@ -41,12 +41,12 @@ class WaterBillInfo(models.Model):
     meter_id=models.ForeignKey(on_delete=models.CASCADE, to=WaterCustomer)
     prev_reading = models.DecimalField(max_digits=50,decimal_places=2,default=0)
     current_reading = models.DecimalField(max_digits=50,decimal_places=2)
-    date =models.DateField(default=timezone.now)
+    date = models.DateTimeField(default=timezone.now)
     is_paid = models.BooleanField(max_length=50,default=False)
-    Month_choice = [('january','january'),('february','february'),('march','march'),('april','april'),
-    ('may','may'),('june','june'),('july','july'),('august','august'),('september','september'),('october','october'),('november','november'),('december','december')]
-    month=models.CharField(max_length=50,choices=Month_choice,blank=True,null = True)
-    year = models.IntegerField(null=True)
+    # Month_choice = [('january','january'),('february','february'),('march','march'),('april','april'),
+    # ('may','may'),('june','june'),('july','july'),('august','august'),('september','september'),('october','october'),('november','november'),('december','december')]
+    # month=models.CharField(max_length=50,choices=Month_choice,blank=True,null = True)
+    # year = models.IntegerField(null=True)
     amount = models.DecimalField(max_digits=50,decimal_places=2,null=True)
     class Meta:
         db_table = "waterbillinfo"
