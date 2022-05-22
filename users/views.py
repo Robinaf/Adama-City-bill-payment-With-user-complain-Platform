@@ -81,23 +81,25 @@ def user_login(request):
             usern = request.POST.get("username")
             pswd = request.POST.get("password")
             user = authenticate(username=usern, password=pswd)
-            if user.groups.exists():
-                a=user.groups.all()[0].name
-                if a == 'customer':
-                    login(request,user)
-                    return redirect('home',)
-                elif a == 'water-reader':
-                    login(request,user)
-                    return redirect('water_reader')
-                elif a=='water_technician':
-                     login(request,user)
-                     return redirect('water_technician')
+            if user is not None:
+                 if user.groups.exists():
+                    a=user.groups.all()[0].name
+                    if a == 'customer':
+                       login(request,user)
+                       return redirect('home',)
+                    elif a == 'water-reader':
+                       login(request,user)
+                       return redirect('water_reader')
+                    elif a=='water_technician':
+                       login(request,user)
+                       return redirect('water_technician')
                 # else:
                 #     return render(request,'Account/login.html')
             else:
                 messages.warning(request, 'Username or password is not correct !!')
-                return redirect(request,'login.html')
+                return redirect('login')
             
+           
 
                        
            
