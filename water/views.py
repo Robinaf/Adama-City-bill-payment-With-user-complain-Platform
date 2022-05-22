@@ -188,6 +188,14 @@ def reportwatersolved(request):
         id=int(request.POST.get('id'))
         y=WaterCustomer.objects.get(username=x)
         meter_id=y.meter_id
+        if id == WaterComplain.objects.get(id=id):
+            print(id)
+        else:
+            print('This is not correct id')
+            messages.warning(request,"please input correct complain Id")
+            return redirect(request, 'customer/reportsolved.html')
+
+
         bb=WaterComplain.objects.get(id=id)
         print(bb.meter_id_id)
         print(meter_id)
@@ -197,6 +205,9 @@ def reportwatersolved(request):
             bb.save()  
         else:
             print("meter id doesn't match")
+            messages.warning(request,"please input correct complain Id")
+            return redirect(request, 'customer/reportsolved.html')
+            
 
 
         
