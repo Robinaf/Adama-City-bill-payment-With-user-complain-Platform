@@ -11,6 +11,10 @@ urlpatterns=[
     path("registerPage",views.registerPage, name= "registerPage"),
     path('user_login/', views.user_login, name = 'user_login'),
     path('home/',views.home,name = 'home'),
-    path('',views.index,name='index')
+    path('',views.index,name='index'),
+    path('payment',views.payment, name='payment'),
+    path('success',views.success,name='success'),
+    path('cancel',views.cancel, name='cancel'),
+    path('ipn/', views.ipn, name='ipn'),
     
 ]

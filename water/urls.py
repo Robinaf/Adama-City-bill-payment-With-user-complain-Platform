@@ -10,5 +10,6 @@ urlpatterns=[
     path('viewwaterbill',views.viewwaterbill,name='viewwaterbill'),
     path('waterpayment',views.waterpayment, name='waterpayment'),
     path('viewwatercomplain',views.viewwatercomplain,name='viewwatercomplain'),
+    path('report',views.report,name='report'),
 
 ]

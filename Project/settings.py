@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'users',
     #'rest_framework',
     'water.apps.WaterConfig',
-    'electric',
+    'electric.apps.ElectricConfig',
     
 ]
 

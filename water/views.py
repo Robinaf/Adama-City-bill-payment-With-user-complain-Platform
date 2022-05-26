@@ -185,18 +185,19 @@ def water_technician(request):
 def reportwatersolved(request):
     if request.method =="POST":      
         x=request.user.username
-        id=int(request.POST.get('id'))
+        idd=int(request.POST.get('id'))
         y=WaterCustomer.objects.get(username=x)
         meter_id=y.meter_id
-        if id == WaterComplain.objects.get(id=id):
-            print(id)
-        else:
-            print('This is not correct id')
-            messages.warning(request,"please input correct complain Id")
-            return redirect(request, 'customer/reportsolved.html')
+        complain=WaterComplain.objects.filter(meter_id_id =meter_id)
+        # if id == WaterComplain.objects.get(id=id):
+        #     print(id)
+        # else:
+        #     print('This is not correct id')
+        #     messages.warning(request,"please input correct complain Id")
+        #     return redirect(request, 'customer/reportsolved.html')
 
 
-        bb=WaterComplain.objects.get(id=id)
+        bb=WaterComplain.objects.get(id=idd)
         print(bb.meter_id_id)
         print(meter_id)
         print(type(meter_id), int(bb.meter_id_id))
@@ -219,9 +220,19 @@ def reportwatersolved(request):
         # complaindetail.save()
         messages.success(request, 'Solution reported successfully')
         return render(request,'customer/viewwaterbill.html')
-
-
     return render(request,'customer/reportsolved.html')
+def report(request):
+    if request.method =='POST':
+
+        x=request.user.username
+        y=WaterCustomer.objects.get(username=x)
+        complain=WaterComplain.objects.filter(meter_id_id =y)
+        idd=complain.id
+        print(idd)
+
+
+
+    
 def viewwaterbill(request):
     x=request.user.username
     y=WaterCustomer.objects.get(username=x)
@@ -291,6 +302,9 @@ def viewwatercomplain(request):
     }
     
     return render(request,'customer/viewwatercomplain.html',context)
+
+
+
 
     
 
