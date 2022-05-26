@@ -32,12 +32,12 @@ class WaterBalanceAdmin(admin.ModelAdmin):
 
 #     readonly_fields = ('balance',)
     search_fields= []
-#     def has_add_permission(self, request, obj=None):
-#         return False
-#     def has_change_permission(self, request, obj=None):
-#         return False
-#     def has_delete_permission(self, request, obj=None):
-#         return False
+    def has_add_permission(self, request, obj=None):
+        return False
+    def has_change_permission(self, request, obj=None):
+        return False
+    def has_delete_permission(self, request, obj=None):
+        return False
    
 class WaterComplainAdmin(admin.ModelAdmin):
      model=WaterComplain

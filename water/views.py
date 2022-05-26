@@ -253,7 +253,7 @@ def waterpayment(request):
         customer =Customer.objects.get(username=x)
         y=customer.balance
         print(y)
-        billinfo =WaterBillInfo.objects.get(meter_id_id =c)
+        billinfo = WaterBillInfo.objects.get(meter_id_id =c)
         amountt= WaterBillInfo.objects.filter(meter_id_id=mm).order_by('-date')[0].amount
         print(amountt)
         status = WaterBillInfo.objects.filter(meter_id_id=mm).order_by('-date')[0].is_paid
@@ -302,6 +302,14 @@ def viewwatercomplain(request):
     }
     
     return render(request,'customer/viewwatercomplain.html',context)
+def totalwatercomplain(request):
+    x=request.user.username
+
+    totalcomplain =WaterComplain.objects.all()
+    context ={
+        'totalcomplain':totalcomplain
+    }
+    return render(request,'water_technician/viewwatercomplain.html',context)
 
 
 
@@ -309,5 +317,48 @@ def viewwatercomplain(request):
     
 
 
+    #///////////////////////
+    # 
+def compeln_ditel(request, pk):
+    updatemytabel=WaterComplain.objects.get(pk=pk)
+    updatemytabel.is_solved=True
+    updatemytabel.save()
+    x=request.user.username
+    y= WaterCustomer.objects.get(username=x)
+    watercomplaindata = WaterComplain.objects.filter(meter_id_id =y)
     
+    context = {
+        'watercomplaindata':watercomplaindata
+    }
+    return render(request,'customer/viewwatercomplain.html',context) 
+def ispaid(request,pk):
+    x=request.user.username
+    # y=x.balance
+    customer =Customer.objects.get(username=x)
+    y=customer.balance
+    pay=WaterBillInfo.objects.get(pk=pk)
+    waterbalance =WaterBalance.objects.get(id =2)
+    billdata=WaterBillInfo.objects.filter(meter_id_id = y)
+    amountt=pay.amount
+    payed =y-amountt
+    if pay.is_paid ==False:
+        waterbalance.balance+=amountt
+        pay.is_paid=True
+        customer.balance=payed
+        customer.save()
+        waterbalance.save()
+        pay.save()
+        context={
+            'billdata':billdata
+        }
+        return render(request,'customer/viewwaterbill.html',context)
+    else:
+        messages.warning(request,"It is paid before")
+        return render(request,'customer/viewwaterbill.html')
+    
+
+
+
+       
+
     

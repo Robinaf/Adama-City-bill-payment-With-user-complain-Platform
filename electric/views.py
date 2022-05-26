@@ -17,6 +17,7 @@ from django.contrib import messages
 # Create your views here.
 def home(request):
     return render(request,'electric_admin/electric_dashboard.html',)
+@login_required
 def electric_reader(request):
 
     if request.method=="POST":
@@ -135,8 +136,8 @@ def electricpayment(request):
         amountt= ElectricBillInfo.objects.filter(meter_id_id=mm).order_by('-date')[0].amount
         print(amountt)
         status = ElectricBillInfo.objects.filter(meter_id_id=mm).order_by('-date')[0].is_paid
-        waterbalance =ElectricBalance.objects.get(id =2)
-        print(waterbalance.balance)
+        electricbalance =ElectricBalance.objects.get(id =1)
+        print(electricbalance.balance)
 
 
         
@@ -146,12 +147,12 @@ def electricpayment(request):
         print(payed)
         if status == False:
             if payed>=0: 
-                waterbalance.balance += amountt             
+                electricbalance.balance += amountt             
                 billinfo.is_paid=True
                 customer.balance =payed
                 billinfo.save()
                 customer.save()
-                waterbalance.save()
+                electricbalance.save()
                 messages.success(
                 request, "You paid successfully ")
                 return render(request,'customer/viewelectricbill.html')

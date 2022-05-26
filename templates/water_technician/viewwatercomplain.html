@@ -1,4 +1,4 @@
-{% extends 'customer/customerbase.html' %}
+{% extends 'water_technician/watertechnicianbase.html' %}
 {% block content %}
 
 <div id="mymain" class="main-content">
@@ -37,7 +37,7 @@
                 <th>Date</th>               
                 </tr>
             </thead>
-            {% for data in watercomplaindata %}
+            {% for data in totalcomplain %}
             <tbody>
                 <tr>
                 <th><span class="custom-checkbox">
@@ -49,10 +49,10 @@
                 <th>{{data.is_solved}}</th>
                 <th>{{data.date}}</th>                
                 <th>
-                
-                    
-                <a href="{% url 'new' data.id %}">solved?</a>
-                
+                <form action=" " method="post">
+                    {% csrf_token %}
+                <a href="{% url 'totalwatercomplain' %}">solved?</a>
+                </form> 
                 <!-- <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i> -->
 
                 <!-- <a href="#deleteEmployeeModal" class="delete" data-toggle="modal">

@@ -54,4 +54,6 @@ class AssignComplain(models.Model):
         return str(self.assign_to)
 class ElectricBalance(models.Model):
      balance = models.DecimalField(max_digits=50,default=0.00,decimal_places=2)
+     def __str__(self):
+        return str(self.balance)
 
