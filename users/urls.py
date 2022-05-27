@@ -16,5 +16,6 @@ urlpatterns=[
     path('success',views.success,name='success'),
     path('cancel',views.cancel, name='cancel'),
     path('ipn/', views.ipn, name='ipn'),
+    path('view_balance',views.view_balance,name='view_balance'),
     
 ]

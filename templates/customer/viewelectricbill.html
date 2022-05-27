@@ -53,12 +53,12 @@
                 <th>{{data.amount}}</th>
                 <th>{{data.is_paid}}</th>
                 <th>
-                <a href="#editEmployeeModal" class="edit" data-toggle="modal">
-                <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
+                    <a href="{% url 'ispaid' data.id %}">click to pay</a>
+                <!-- <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
                 </a>
                 <a href="#deleteEmployeeModal" class="delete" data-toggle="modal">
                 <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
-                </a>
+                </a> -->
                 </th>
                 </tr>
                 

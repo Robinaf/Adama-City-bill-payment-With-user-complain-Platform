@@ -41,7 +41,7 @@ class ElectricBillInfo(models.Model):
 class ElectricComplain(models.Model):
     meter_id = models.ForeignKey(on_delete=models.CASCADE, to=ElectricCustomer)
     complain = models.TextField()
-    date = models.DateField(null=True)
+    date = models.DateTimeField(default=timezone.now)
     is_solved = models.CharField(max_length=50,default=False )
     phone_number=models.IntegerField(null=True)
 

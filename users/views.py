@@ -172,7 +172,20 @@ def cancel(request):
 
 def ipn(request):
     return render(request, 'pay/ipn.html')   
-        
+
+
+
+######### display balance ######
+def view_balance(request):
+    x=request.user.username
+    customer =Customer.objects.get(username=x)
+    custbalance=float(customer.balance)
+    print(customer)
+    print(custbalance)
+    context ={
+        'custbalance':custbalance }
+    
+    return render(request,'customer/viewbalance.html',context)
 
        
 

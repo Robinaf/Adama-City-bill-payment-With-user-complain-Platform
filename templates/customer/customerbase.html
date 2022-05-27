@@ -55,11 +55,8 @@
 		  </li>
 		  
 		  
-		   <li class="dropdown">
-		  <a href="{% url 'viewelectricbill' %}" data-toggle="collapse" aria-expanded="false" 
-		  class="dropdown-toggle">
-		  <i class="material-icons">settings</i>Electric Bill
-		  </a>
+		   <li class="active">
+			<a href="{% url 'viewelectricbill' %}" class="dashboard"><i class="material-icons">settings</i>Electric Bill </a>
 		  <ul class="collapse list-unstyled menu" id="homeSubmenu2">
 		     <li><a href="{% url 'waterpayment' %}">complain</a></li>
 			 <li><a href="#">Apps 2</a></li>
@@ -78,6 +75,13 @@
 			 <li><a href="#">report solved complain</a></li>
 		  </ul>
 		  </li>
+		  <li class="active">
+			<a href="{% url 'view_balance' %}" class="dashboard"><i class="material-icons">mail</i>My Balance</a>
+			<!-- <a href="{% url 'view_balance' %}" data-toggle="collapse" aria-expanded="false" 
+			class="dashboard">
+			<i class="material-icons">mail</i>My balance
+			</a>
+			 -->
 		  
 <!-- 		  
 		   <li class="dropdown">
