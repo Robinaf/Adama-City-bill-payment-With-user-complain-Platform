@@ -23,9 +23,11 @@ class CompanyAdminConfig(UserAdmin):
          ),
     )
     readonly_fields=('date_joined',)
-class CustomerAdminConfig(admin.ModelAdmin):
-    def has_add_permission(self, request, obj=None):
-        return False
+class CustomerAdminConfig(UserAdmin):
+    # def has_add_permission(self, request, obj=None):
+    #     return False
+    # def has_change_permission(self, request, obj=None):
+    #     return False
     site_header = 'My Super Administration'
     model =Customer
     search_fields = ('email', 'username', 'first_name',)
@@ -37,7 +39,7 @@ class CustomerAdminConfig(admin.ModelAdmin):
     
     
     
-    readonly_fields=('date_joined','password','last_login')
+    readonly_fields=('date_joined','last_login')
     exclude_fields= ('is_superuser',)
     fieldsets = (
     (None, {'fields': ('username', 'password')}),

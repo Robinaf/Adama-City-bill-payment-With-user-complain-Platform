@@ -1,9 +1,15 @@
 {% extends 'customer/customerbase.html' %}
 {% block content %}
 <body>
-    <form action=""  method="post">
+    <form action="https://test.yenepay.com/"  method="post">
         {% csrf_token %}
         <h4> perform your payment here</h4>
+        {% csrf_token %}
+        {% for x, y in obj.items %}
+            <input type="hidden" name="{{ x }}" value="{{ y }}">
+            <p>Total Amount you paid: {{ amountt }}</p>
+        {% endfor %}
+        {{ amountt }}
         <div class="button">
             <input type="submit" value="Pay here"  >
           </div>

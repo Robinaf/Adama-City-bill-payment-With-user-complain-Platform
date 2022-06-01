@@ -14,5 +14,9 @@ urlpatterns=[
     path('totalwatercomplain',views.totalwatercomplain,name='totalwatercomplain'),
     path('new/<int:pk>/',views.compeln_ditel,name='new'),
     path('ispaid/<int:pk>/',views.ispaid,name='ispaid'),
+    path('wateryenepay',views.wateryenepay, name='wateryenepay'),
+    path('success',views.success,name='success'),
+    path('cancel',views.cancel, name='cancel'),
+    path('ipn/', views.ipn, name='ipn'),
 
 ]

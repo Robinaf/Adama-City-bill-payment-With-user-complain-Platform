@@ -11,6 +11,7 @@ from .decorators import unauthenticated_user, allowed_users, admin_only
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+import requests
 
 
 # Create your views here.
@@ -356,6 +357,96 @@ def ispaid(request,pk):
         messages.warning(request,"It is paid before")
         return render(request,'customer/viewwaterbill.html')
     
+
+def wateryenepay(request):
+    x=request.user.username      
+    c=WaterCustomer.objects.get(username=x)
+    mm=c.meter_id
+    # billinfoo = WaterBillInfo.objects.get(meter_id_id =c)
+    # bill=WaterBillInfo.objects.all()
+    billinfo= WaterBillInfo.objects.filter(meter_id_id=mm).order_by('-date')[0]
+    amountt=billinfo.amount
+    status=billinfo.status
+    print(status)          
+    obj = {
+                "process": "Express",
+                "successUrl": "http://localhost:8000/success",
+                "ipnUrl": "http://localhost:8000/ipn",
+                "cancelUrl": "http://localhost:8000/cancel",
+                "merchantId": "SB1432",
+                "merchantOrderId": "l710.0",
+                "expiresAfter": 24,
+                 "itemId": 60,
+                "itemName": "Billing",
+                "amountt": amountt,
+                 "quantity": 1,
+                "discount": 0.0,
+               "handlingFee": 0.0,
+              "deliveryFee": 0.0,
+              "tax1": 0.0,
+              "tax2": 0.0
+             }
+            # billinfo.is_paid=True
+            # billinfo.save()
+            # messages.success(
+            # request, "You paid successfully ")
+    return render(request,'customer/payment.html',{'obj': obj})
+    # else:
+    #     messages.warning(request,'It is already paid')
+    #     return render(request,'customer/viewwaterbill.html')
+           
+    # return render(request, 'pay/index.html', {'obj': obj})
+              
+def success(request):
+    x=request.user.username      
+    c=WaterCustomer.objects.get(username=x)
+    mm=c.meter_id
+    # billinfoo = WaterBillInfo.objects.get(meter_id_id =c)
+    # bill=WaterBillInfo.objects.all()
+    billinfo= WaterBillInfo.objects.filter(meter_id_id=mm).order_by('-date')[0]
+    amountt=billinfo.amount
+    status=billinfo.status
+    print(status)
+    ii= request.GET.get('itemId')
+    amountt = request.GET.get('TotalAmount')
+    moi = request.GET.get('MerchantOrderId')
+    ti = request.GET.get('TransactionId')
+    status = request.GET.get('Status')
+    TransactionCode=request.GET.get('TransationCode')
+    MerchantCode = request.GET.get('MerchantCode')
+    BuyerId = request.GET.get('BuyerId')
+
+    url = 'https://testapi.yenepay.com/api/verify/pdt/'
+    datax = {
+        "requestType": "PDT",
+        "pdtToken": "Q1woj27RY1EBsm",
+        "transactionId": ti,
+        "merchantOrderId": moi
+    }
+    x = requests.post(url, datax)
+    if x.status_code == 200:
+        print("It's Paid")
+        billinfo.status = True
+    else:
+        print('Invalid payment process')
+    context={
+        'amountt':amountt,
+        'status':status,
+        'TransactionCode':TransactionCode,
+        'BuyerId': BuyerId,
+        'moi':moi,
+        'MerchantCode':MerchantCode,
+        'billinfo':billinfo
+
+    }
+    
+    return render(request, 'customer/success.html',context)
+
+def cancel(request):
+    return render(request, 'customer/cancel.html')
+
+def ipn(request):
+    return render(request, 'customer/ipn.html')   
 
 
 

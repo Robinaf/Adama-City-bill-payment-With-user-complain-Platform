@@ -61,6 +61,7 @@ class WaterComplain(models.Model):
     date = models.DateTimeField(default=timezone.now)
     is_solved = models.CharField(max_length=50,default=False )#null=True,default='not solved')
     phone_number=models.IntegerField(null=True)
+    assigned_to=models.ForeignKey(WaterTechnician,null=True,max_length=100, on_delete=models.CASCADE,)
     
     class Meta:
         db_table = "water_complain"
