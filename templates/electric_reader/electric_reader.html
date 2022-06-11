@@ -1,4 +1,4 @@
-{% extends 'water_reader/waterreaderbase.html' %}  
+{% extends 'electric_reader/electricreaderbase.html' %}  
 {% block content %}
 {%load static%}
 <head>
@@ -19,7 +19,7 @@
       <div class="mx-auto" style="width: 200px">
       <div class="container">
         <div class="row">
-          <form name="myForm" action="{% url 'water_reader'%}" method="post">
+          <form name="myForm" action="{% url 'electric_reader'%}" method="post">
             {% csrf_token %}
           <div class="col-md">
             <input name="meter_id_id" type="number" id="formControlLg" class="form-control form-control-lg" required />
@@ -30,7 +30,17 @@
             <label class="form-label" for="formControlDefault">month</label>
             <input name="year" type="text" id="year" class="form-control"required />
             <label class="form-label" for="formControlDefault">year</label> -->
+
             <button type="submit" class="btn btn-primary">submit</button>
+            {%for ms in messages%}
+            {% if ms.tags == 'warning' %}
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+            <script>
+              var m = "{{ ms }}";
+              swal("Warning", m, "warning")
+            </script>
+            {% endif %}
+            {% endfor %}
           </div>
           
         </form>

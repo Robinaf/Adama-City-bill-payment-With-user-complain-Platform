@@ -5,20 +5,24 @@ from django.db.models import IntegerField
 from django.db.models.functions import Cast
 from django.shortcuts import render,redirect
 from pymysql import NULL
-from .models import ElectricBalance, ElectricBillInfo,ElectricCustomer,ElectricComplain
+from .models import ElectricBalance, ElectricBillInfo,ElectricCustomer,ElectricComplain, ElectricTechnician
 from django.http import HttpResponse
-from users.models import Customer
+from users.models import Customer,Account
 #from .decorators import unauthenticated_user, allowed_users, admin_only
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+import requests
 
 
 # Create your views here.
 def home(request):
     return render(request,'electric_admin/electric_dashboard.html',)
-@login_required
+
+
 def electric_reader(request):
+    x=request.user.username
+    print(x)
 
     if request.method=="POST":
         
@@ -37,6 +41,8 @@ def electric_reader(request):
         #################################################
         if current_reading-prev_read <=0:
              print('current cannot be less than previous reading')
+             messages.warning(request, 'Incorrect Current Reading')
+             return render(request,'electric_reader/electric_reader.html')
 
         elif current_reading-prev_read <= 50:
             print('is less tan 50')
@@ -79,7 +85,8 @@ def electric_reader(request):
             print(prev_read)
             pass
                
-        return redirect ('water_reader')
+        messages.success(request, 'You sent the data to server successfully')
+        return render (request,'electric_reader/electricreaderhome.html')
     
     return render(request,'electric_reader/electric_reader.html')
 ##########################Electric Complain ############
@@ -88,7 +95,7 @@ def electriccomplain(request):
         phone_number=request.POST.get('phone_number')
         complain=request.POST.get('complain')
         if complain ==NULL:
-            messages.warning(request,'your complain is impty')
+            messages.warning(request,'your complain is empty')
             return(request,'customer/electriccomplain.html')
         else:
             x=request.user.username
@@ -105,6 +112,7 @@ def electriccomplain(request):
     return render(request,'customer/electriccomplain.html',)
 def viewelectricbill(request):
     x=request.user.username
+    print(x)
     y=ElectricCustomer.objects.get(username=x)
     m=y.meter_id
     billinfo=ElectricBillInfo.objects.filter(meter_id_id = y)
@@ -116,6 +124,7 @@ def viewelectricbill(request):
     return render(request,'customer/viewelectricbill.html',context)
 def viewelectriccomplain(request):
     x=request.user.username
+    print(x)
     y= ElectricCustomer.objects.get(username=x)
     electriccomplaindata = ElectricComplain.objects.filter(meter_id_id =y)
     
@@ -171,5 +180,56 @@ def electricpayment(request):
         
     
     return render(request, 'customer/payment.html')
+
 def electric_technician(request):
-    return render(request,'electric_technician/electric_technician.html')   
+    x=request.user.username
+    print(x)
+    assignn=ElectricComplain.objects.filter(assigned_to_id=x )
+    context={
+        'assignn':assignn
+    }
+    return render(request,'electric_technician/assigned_complain.html',context)
+    ############ electric reader page############  
+def electricreaderpage(request):
+    return render(request,'electric_reader/electricreaderhome.html')
+############ Electric technician check assigned complain#####
+
+def elec_assigned_complain(request):
+    x=request.user.username
+    print(x)
+    # y= ElectricTechnician.objects.get(username=x)
+    
+    assignn=ElectricComplain.objects.filter(assigned_to_id=x )
+   
+    #print(assign)
+    # print(assign.id)
+    context={
+        'assignn':assignn
+    }
+    return render(request,'electric_technician/assigned_complain.html',context) 
+     ######Electric payment #########
+def e_ispaid(request,pk):
+    x=request.user.username
+    # y=x.balance
+    customer =Customer.objects.get(username=x)
+    y=customer.balance
+    pay=ElectricBillInfo.objects.get(pk=pk)
+    electricbalance =ElectricBalance.objects.get(id =1)
+    billinfo=ElectricBillInfo.objects.filter(meter_id_id = y)
+    amountt=pay.amount
+    payed =y-amountt
+    if pay.is_paid ==False:
+        electricbalance.balance+=amountt
+        pay.is_paid=True
+        customer.balance=payed
+        customer.save()
+        electricbalance.save()
+        pay.save()
+        context={
+            'billinfo':billinfo
+        }
+        messages.success(request,"You paid successfully")
+        return render(request,'customer/viewelectricbill.html',context)
+    else:
+        messages.warning(request,"It is paid before")
+        return render(request,'customer/viewelectricbill.html')

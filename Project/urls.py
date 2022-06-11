@@ -1,4 +1,5 @@
 
+from re import template
 from django.contrib import admin
 from django.urls import path,include
 from django.urls import path as url
@@ -7,6 +8,8 @@ from water.admin import water_site
 from users import views
 # from users.admin import admin_site
 from django.contrib import admin
+from django.urls import reverse_lazy
+from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
@@ -20,6 +23,10 @@ urlpatterns = [
     path("login/", views.user_login, name='login'),
     path("signup/", views.registerPage, name='registerPage'),
     path('logout/',views.user_logout,name='logout'),
+    path('', include('django.contrib.auth.urls')),
+   
+
+
     #url('superadmin/', admin_site.urls),
     
 

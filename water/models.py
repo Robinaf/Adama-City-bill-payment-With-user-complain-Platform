@@ -3,6 +3,8 @@
 # from turtle import title
 # from unittest.util import _MAX_LENGTH
 from django.db import models
+from datetime import datetime, timedelta
+
 from users.models import Customer
 from users.models import *
 from django.utils import timezone
@@ -48,6 +50,7 @@ class WaterBillInfo(models.Model):
     # month=models.CharField(max_length=50,choices=Month_choice,blank=True,null = True)
     # year = models.IntegerField(null=True)
     amount = models.DecimalField(max_digits=50,decimal_places=2,null=True)
+    deadline =models.DateTimeField(default=datetime.now() + timedelta(minutes=3))
     class Meta:
         db_table = "waterbillinfo"
     def __str__(self):

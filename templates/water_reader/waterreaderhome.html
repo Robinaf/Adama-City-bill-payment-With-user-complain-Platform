@@ -1,0 +1,16 @@
+{% extends 'water_reader/waterreaderbase.html' %}
+{% block content %}
+<h1>this is water reader dashboard</h1>
+
+{%for ms in messages%}
+{% if ms.tags == 'warning' %}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+  var m = "{{ ms }}";
+  swal("Warning", m, "warning")
+</script>
+{% endif %}
+{% endfor %}
+
+
+{% endblock content %}

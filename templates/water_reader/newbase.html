@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-        <title>Electric Reader Dashboard</title>
+        <title> Water Dashboard</title>
 	    <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	    <!----css3---->
@@ -35,49 +35,55 @@
 	 
 	 <div id="sidebar">
 	    <div class="sidebar-header">
-		   <h3><img src="{% static 'img/logo1.png' %}" class="img-fluid"/><span>Electric Reader</span></h3>
+		   <h3><img src="{% static 'img/logo1.png' %}" class="img-fluid"/><span>Water Reader</span></h3>
 		</div>
 		<ul class="list-unstyled component m-0">
 		  <li class="active">
-		  <a href="{%url 'electric_reader'%}" class="dashboard"><i class="material-icons">settings</i> Bill </a>
+		  <a href="#" class="dashboard"><i class="material-icons">settings</i>water Bill Read </a>
+		 
 		  </li>
+
 		  
-		  <li class="active">
-			<a href="{% url 'electricreaderpage' %}" 
-			class="dashboard">
-			<i class="material-icons" >perm_identity</i>Home
-			</a>
-			<!-- <ul class="collapse list-unstyled menu" id="homeSubmenu1">
-			   <li><a href="#">edit info</a></li>
-			  <li><a href="#">layout 2</a></li>
-			   <li><a href="#">layout 3</a></li> -->
-			<!-- </ul>  ---> 
-			</li>
-		  
-<!-- 		  
-		   <li class="dropdown">
-		  <a href="#homeSubmenu2" data-toggle="collapse" aria-expanded="false" 
+		  <!-- <li class="dropdown">
+		  <a href="#homeSubmenu1" data-toggle="collapse" aria-expanded="false" 
 		  class="dropdown-toggle">
-		  <i class="material-icons">settings</i>Electric Bill
+		  <i class="material-icons" id="watercomplain">mail</i>Water complain
 		  </a>
-		  <ul class="collapse list-unstyled menu" id="homeSubmenu2">
-		     <li><a href="#">Apps 1</a></li>
+		  <ul class="collapse list-unstyled menu" id="homeSubmenu1">
+		     <li><a href="{% url 'complain' %}" id="complain">report complain</a></li>
+			 <li><a href="{% url 'viewwatercomplain' %}">view complain</a></li>
+			 <li><a href="{% url 'reportwatersolved'%}">Report Solved complain</a></li>
+		  </ul>
+		  </li>-->
+		  
+		  
+		   <li class="passive">
+			<a href="#" class="dashboard"><i class="material-icons">settings</i>home </a>
+		  <!-- <ul class="collapse list-unstyled menu" id="homeSubmenu2">
+		     <li><a href="{% url 'waterpayment' %}">complain</a></li>
 			 <li><a href="#">Apps 2</a></li>
 			 <li><a href="#">Apps 3</a></li>
-		  </ul>
+		  </ul> -->
 		  </li>
-		  
+		  <!-- 
 		   <li class="dropdown">
 		  <a href="#homeSubmenu3" data-toggle="collapse" aria-expanded="false" 
 		  class="dropdown-toggle">
 		  <i class="material-icons">mail</i>Electric Complain
 		  </a>
 		  <ul class="collapse list-unstyled menu" id="homeSubmenu3">
-		     <li><a href="#">Pages 1</a></li>
-			 <li><a href="#">Pages 2</a></li>
-			 <li><a href="#">Pages 3</a></li>
+		     <li><a href="{% url 'electriccomplain' %}">report complain</a></li>
+			 <li><a href="{% url 'viewelectriccomplain' %}">view Complain</a></li>
+			 <li><a href="#">report solved complain</a></li>
 		  </ul>
-		  </li> -->
+		  </li>
+		  <li class="active">
+			<a href="{% url 'view_balance' %}" class="dashboard"><i class="material-icons">mail</i>My Balance</a> -->
+			<!-- <a href="{% url 'view_balance' %}" data-toggle="collapse" aria-expanded="false" 
+			class="dashboard">
+			<i class="material-icons">mail</i>My balance
+			</a>
+			 -->
 		  
 <!-- 		  
 		   <li class="dropdown">
@@ -129,16 +135,16 @@
 		  </ul>
 		  </li> -->
 		  
-<!-- 		   
-		  <li class="">
-		  <a href="#" class=""><i class="material-icons">date_range</i>calender </a>
+		   
+		  <!-- <li class="">
+		  <a href="{% url 'waterpayment' %}" class=""><i class="material-icons">date_range</i>water payement area </a>
 		  </li>
-		  <li class=""> -->
+		  <li class="">
 		  <a href="{% url 'logout' %}" class=""><i class="material-icons">perm_identity</i>sign out</a>
 		  </li>
 		
 		</ul>
-	 </div>
+	 </div> -->
 	 
    <!-------sidebar--design- close----------->
    
@@ -175,7 +181,7 @@
 					 </div>
 					 
 					 
-					 <!-- <div class="col-10 col-md-6 col-lg-8 order-1 order-md-3">
+					 <div class="col-10 col-md-6 col-lg-8 order-1 order-md-3">
 					     <div class="xp-profilebar text-right">
 						    <nav class="navbar p-0">
 							   <ul class="nav navbar-nav flex-row ml-auto">
@@ -185,11 +191,11 @@
 								  <span class="notification">4</span>
 								 </a>
 								  <ul class="dropdown-menu">
-								     <!-- <li><a href="#">You Have 4 New Messages</a></li>
+								     <li><a href="#">You Have 4 New Messages</a></li>
 									 <li><a href="#">You Have 4 New Messages</a></li>
 									 <li><a href="#">You Have 4 New Messages</a></li>
-									 <li><a href="#">You Have 4 New Messages</a></li> -->
-								  <!-- </ul>
+									 <li><a href="#">You Have 4 New Messages</a></li>
+								  </ul>
 							   </li>
 							   
 							   <li class="nav-item">
@@ -219,8 +225,8 @@
 									 </a></li>
 									 
 								  </ul>
-							   </li> -->
-							    -->
+							   </li>
+							   
 							   
 							   </ul>
 							</nav>
@@ -230,7 +236,7 @@
 				 </div>
 				 
 				 <div class="xp-breadcrumbbar text-center">
-				    <h4 class="page-title">Electric Reader Dashboard</h4>
+				    <h4 class="page-title">Water Reader Dashboard</h4>
 					<!-- <ol class="breadcrumb">
 					  <li class="breadcrumb-item"><a href="#">Vishweb</a></li>
 					  <li class="breadcrumb-item active" aria-curent="page">Dashboard</li>
@@ -247,6 +253,15 @@
 		     {% block content %}
 
 			 {% endblock %}
+			 {%for msg in messages%}
+			 {% if msg.tags == 'success' %}
+			 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+			 <script>
+			   var m = "{{ msg }}";
+			   swal("Perfect !", m, "success")
+			 </script>
+			 {% endif %}
+			 {% endfor %}
 		      
 		  
 		    <!------main-content-end-----------> 

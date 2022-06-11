@@ -34,10 +34,11 @@
                 <th>Meter Id</th>
                 <th>Complain</th>
                 <th>Is Solved</th>
-                <th>Date</th>               
+                <th>Date</th>
+                <th>phone number</th>             
                 </tr>
             </thead>
-            {% for data in totalcomplain %}
+            {% for data in assign %}
             <tbody>
                 <tr>
                 <th><span class="custom-checkbox">
@@ -47,11 +48,12 @@
                 <th>{{data.meter_id_id}}</th>
                 <th>{{data.complain}}</th>
                 <th>{{data.is_solved}}</th>
-                <th>{{data.date}}</th>                
+                <th>{{data.date}}</th> 
+                <th>{{data.phone_number}}</th>                
                 <th>
-                <form action=" " method="post">
+                <!-- <form action=" " method="post">
                     {% csrf_token %}
-                <a href="{% url 'totalwatercomplain' %}">solved?</a>
+                <a href="#">solved?</a> -->
                 </form> 
                 <!-- <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i> -->
 

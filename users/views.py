@@ -15,6 +15,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 import requests
+from django.core.mail import send_mail
 
 from .models import *
 from .forms import CreateUserForm
@@ -22,6 +23,11 @@ from .forms import CreateUserForm
 #from .filters import OrderFilter
 from .decorators import unauthenticated_user, allowed_users, admin_only
 from water.models import *
+import smtplib
+from email.message import EmailMessage
+from django.conf import settings
+# from email.MIMEMultipart import MIMEMultipart
+# from email.MIMEText import MIMEText
 
 
 # Create your views here.
@@ -90,13 +96,15 @@ def user_login(request):
                        return redirect('home',)
                     elif a == 'water-reader':
                        login(request,user)
-                       return redirect('water_reader')
+                       return redirect('waterreaderpage')
                     elif a=='water_technician':
                        login(request,user)
-                       return redirect('water_technician')
+                       return redirect('assignedwatercomplain')
                     elif a=='electric-reader':
-                        return redirect('electric_reader')
+                        login(request,user)
+                        return redirect('electricreaderpage')
                     elif a=='electric_technician':
+                        login(request,user)
                         return redirect('electric_technician')
                 # else:
                 #     return render(request,'Account/login.html')
@@ -190,6 +198,17 @@ def view_balance(request):
     return render(request,'customer/viewbalance.html',context)
 
        
+
+def sendemail(request):
+
+    send_mail('Hello this to Roba',
+    'Hello this is the message',
+    'robatemesgen42@gmail.com',
+    ['efremyohanis116@gmail.com'],
+    fail_silently=False
+    
+    )
+    return render(request,'email.html')
 
 
 

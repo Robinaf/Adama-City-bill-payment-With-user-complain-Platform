@@ -1,7 +1,8 @@
 from django.db import models
 from users.models import Customer
 from users.models import *
-from django.utils import timezone 
+from django.utils import timezone
+from datetime import datetime, timedelta 
 
 # Create your models here.
 
@@ -24,6 +25,10 @@ class ElectricCustomer(models.Model):
     username = models.ForeignKey(null=False,max_length=100, on_delete=models.CASCADE, to = Customer)
     class Meta:
         db_table = "electric_customer"
+    def __str__(self):
+        return str(self.meter_id )
+    def __unicode__(self):
+        return self.meter_id
 class ElectricEmployee(Account):
     employee_id = models.IntegerField(primary_key=True)
     class Meta:
@@ -35,6 +40,7 @@ class ElectricBillInfo(models.Model):
     date = models.DateTimeField(default=timezone.now)
     amount = models.DecimalField(max_digits=50,decimal_places=2,null=True)
     is_paid = models.BooleanField(max_length=50,default=False)
+    deadline =models.DateTimeField(default=datetime.now() + timedelta(days=30))
     class Meta:
         db_table = "electricbillinfo"
 
@@ -42,11 +48,14 @@ class ElectricComplain(models.Model):
     meter_id = models.ForeignKey(on_delete=models.CASCADE, to=ElectricCustomer)
     complain = models.TextField()
     date = models.DateTimeField(default=timezone.now)
-    is_solved = models.CharField(max_length=50,default=False )
+    is_solved = models.BooleanField(max_length=50,default=False )
     phone_number=models.IntegerField(null=True)
+    assigned_to =models.ForeignKey(ElectricTechnician,null=True,max_length=100, on_delete=models.CASCADE,)
 
     class Meta:
         db_table = "electric_complain"
+    def __str__(self):
+        return str(self.meter_id)
 class AssignComplain(models.Model):
     complain_id=models.ForeignKey(on_delete = models.CASCADE , to=ElectricComplain)
     assign_to =models.ForeignKey(on_delete=models.CASCADE, to =ElectricTechnician)

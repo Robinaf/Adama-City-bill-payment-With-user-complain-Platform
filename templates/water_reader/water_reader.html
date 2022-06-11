@@ -31,6 +31,16 @@
             <input name="year" type="text" id="year" class="form-control"required />
             <label class="form-label" for="formControlDefault">year</label> -->
             <button type="submit" class="btn btn-primary">submit</button>
+            
+            {%for ms in messages%}
+            {% if ms.tags == 'warning' %}
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+            <script>
+              var m = "{{ ms }}";
+              swal("Warning", m, "warning")
+            </script>
+            {% endif %}
+            {% endfor %}
           </div>
           
         </form>

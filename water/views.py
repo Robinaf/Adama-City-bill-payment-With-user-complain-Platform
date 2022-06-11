@@ -1,10 +1,11 @@
+from ast import Assign
 from multiprocessing import context
 from pyexpat import model
 from django.db.models import IntegerField
 from django.db.models.functions import Cast
 from django.shortcuts import render,redirect
 from pymysql import NULL
-from .models import WaterBalance, WaterBillInfo,WaterCustomer,WaterComplain
+from .models import WaterBalance, WaterBillInfo,WaterCustomer,WaterComplain,WaterReader,WaterTechnician
 from django.http import HttpResponse
 from users.models import Customer
 from .decorators import unauthenticated_user, allowed_users, admin_only
@@ -12,6 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 import requests
+from electric.models import *
 
 
 # Create your views here.
@@ -52,6 +54,9 @@ def water_reader(request):
         #################################################
         if current_reading-prev_read <=0:
              print('current cannot be less than previous reading')
+             messages.warning(request, 'Incorrect Current Reading')
+             return render(request,'water_reader/water_reader.html')
+        
 
         elif current_reading-prev_read <= 50:
             print('is less tan 50')
@@ -119,8 +124,8 @@ def water_reader(request):
         # )
         # billinfo.save()
        
-       
-        return redirect ('water_reader')
+        messages.success(request, 'You sent the data to server successfully')
+        return render (request,'water_reader/waterreaderhome.html')
     
     return render(request,'water_reader/water_reader.html')
 # def admin_cheek_bill(request):
@@ -257,6 +262,7 @@ def waterpayment(request):
         billinfo = WaterBillInfo.objects.get(meter_id_id =c)
         amountt= WaterBillInfo.objects.filter(meter_id_id=mm).order_by('-date')[0].amount
         print(amountt)
+        deadline=WaterBillInfo.objects.filter(meter_id_id=mm).order_by('-date')[0].deadline
         status = WaterBillInfo.objects.filter(meter_id_id=mm).order_by('-date')[0].is_paid
         waterbalance =WaterBalance.objects.get(id =2)
         print(waterbalance.balance)
@@ -268,7 +274,8 @@ def waterpayment(request):
         
         print(payed)
         if status == False:
-            if payed>=0: 
+            if payed>=0:
+
                 waterbalance.balance += amountt             
                 billinfo.is_paid=True
                 customer.balance =payed
@@ -277,7 +284,8 @@ def waterpayment(request):
                 waterbalance.save()
                 messages.success(
                 request, "You paid successfully ")
-                return render(request,'customer/viewwaterbill.html')
+                #return render(request,'customer/viewwaterbill.html')
+                return redirect(request,'viewwaterbill')
                 
 
 
@@ -295,6 +303,7 @@ def waterpayment(request):
     return render(request, 'customer/payment.html')            
 def viewwatercomplain(request):
     x=request.user.username
+    print(x)
     y= WaterCustomer.objects.get(username=x)
     watercomplaindata = WaterComplain.objects.filter(meter_id_id =y)
     
@@ -303,14 +312,18 @@ def viewwatercomplain(request):
     }
     
     return render(request,'customer/viewwatercomplain.html',context)
-def totalwatercomplain(request):
+def assignedwatercomplain(request):
     x=request.user.username
+    print(x)
 
     totalcomplain =WaterComplain.objects.all()
+    assign=WaterComplain.objects.filter(assigned_to=x)
     context ={
-        'totalcomplain':totalcomplain
+        'assign':assign
     }
     return render(request,'water_technician/viewwatercomplain.html',context)
+
+
 
 
 
@@ -352,6 +365,7 @@ def ispaid(request,pk):
         context={
             'billdata':billdata
         }
+        messages.success(request,"You paid successfully")
         return render(request,'customer/viewwaterbill.html',context)
     else:
         messages.warning(request,"It is paid before")
@@ -396,7 +410,8 @@ def wateryenepay(request):
     #     return render(request,'customer/viewwaterbill.html')
            
     # return render(request, 'pay/index.html', {'obj': obj})
-              
+def waterreaderpage(request):
+     return render(request,'water_reader/waterreaderhome.html')             
 def success(request):
     x=request.user.username      
     c=WaterCustomer.objects.get(username=x)
@@ -450,6 +465,31 @@ def ipn(request):
 
 
 
+# def waternotification(request):
+#      x=request.user.username      
+   
+    
+#     billinfoo = WaterBillInfo.objects.get(meter_id_id =c)
+#     bill=WaterBillInfo.objects.all()
+#     billinfo= WaterBillInfo.objects.filter(meter_id_id=mm).order_by('-date')[0].deadline
+#     billinfo.date
+#     return HttpResponse(status = 200)
+
+def water_assigned_complain(request):
+    x=request.user.username
+    print(request.user.username)
+    y= WaterTechnician.objects.get(username=x)
+    print(y)
+    assign=WaterComplain.objects.filter(assigned_to =y)
+   
+    #print(assign)
+    # print(assign.id)
+    context={
+        'assign':assign
+    }
+    return render(request,'water_technician/waterassigned.html',context) 
+
+
        
 
-    
+   

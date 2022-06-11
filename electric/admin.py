@@ -63,17 +63,19 @@ class ElectricBillAdmin(admin.ModelAdmin):
      readonly_fields = ('prev_reading','current_reading','amount',)
      list_display =('id','meter_id','prev_reading','current_reading','amount','is_paid')
      def has_change_permission(self, request, obj=None):
-        return True
+        return False
+     def has_add_permission(self, request, obj=None):
+        return False
 
 
 class ElectricComplainAdmin(admin.ModelAdmin):
      model = ElectricComplain
-     readonly_fields = ('complain','is_solved','date')
+     readonly_fields = ('id','complain','is_solved','date','meter_id','phone_number')
      # list_display = ('email', 'username', 'first_name',
      #                'is_active', 'is_staff','balance',)
-     list_display =('id','meter_id','complain','date','is_solved','phone_number')
-     def has_change_permission(self, request, obj=None):
-        return False
+     list_display =('id','meter_id','complain','date','is_solved','phone_number','assigned_to')
+     # def has_change_permission(self, request, obj=None):
+     #    return False
      def has_add_permission(self, request, obj=None):
         return False
 

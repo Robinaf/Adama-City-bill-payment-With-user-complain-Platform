@@ -84,8 +84,8 @@ class WaterComplainAdmin(admin.ModelAdmin):
      # list_display = ('email', 'username', 'first_name',
      #                'is_active', 'is_staff','balance',)
      list_display =('id','meter_id','complain','date','is_solved','phone_number','assigned_to')
-     def has_change_permission(self, request, obj=None):
-        return True
+     # def has_change_permission(self, request, obj=None):
+     #    return False
      def has_add_permission(self, request, obj=None):
         return False
 

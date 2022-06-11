@@ -1,0 +1,32 @@
+{% extends 'electric_reader/electricreaderbase.html' %}  
+{% block content %}
+<body>
+  
+  <h1>this is "      we          "                 Electric reader dashboard</h1>
+  {% csrf_token %}
+  {%for ms in messages%}
+  {% if ms.tags == 'warning' %}
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script>
+    var m = "{{ ms }}";
+    swal("Warning", m, "warning")
+  </script>
+  {% endif %}
+  {% endfor %}
+  {%for ms in messages%}
+{% if ms.tags == 'success' %}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+  var m = "{{ ms }}";
+  swal("Perfect", m, "success")
+</script>
+{% endif %}
+{% endfor %}
+  
+  
+</body>
+{%endblock%}
+
+
+
+

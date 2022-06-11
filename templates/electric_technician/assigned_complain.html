@@ -1,4 +1,4 @@
-{% extends 'customer/customerbase.html' %}
+{% extends 'electric_technician/electrictechnicianbase.html' %}
 {% block content %}
 
 <div id="mymain" class="main-content">
@@ -9,7 +9,7 @@
         <div class="table-title">
             <div class="row">
                 <div class="col-sm-6 p-0 flex justify-content-lg-start justify-content-center">
-                <h2 class="ml-lg-2">BILL Detail Information</h2>
+                <h2 class="ml-lg-2">Assigned complain Information</h2>
                 </div>
                 <!-- <div class="col-sm-6 p-0 flex justify-content-lg-end justify-content-center">
                 <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal">
@@ -32,28 +32,22 @@
                 <label for="selectAll"></label></th>
                 <th>ID</th>
                 <th>Meter Id</th>
-                <th>previous reading</th>
-                <th>Current_reading</th>
+                <th>message</th>
                 <th>Date</th>
-                <th>Amount</th>
-                <th>Is_paid</th>
+                <th>phone number</th>
                 </tr>
             </thead>
-            {% for data in billinfo %}
+            {% for data in assignn %}
             <tbody>
                 <tr>
                 <th><span class="custom-checkbox">
                 <input type="checkbox" id="checkbox1" name="option[]" value="1">
                 <label for="checkbox1"></label></th>
                 <th>{{data.id}}</th>
-                <th>{{data.meter_id_id}}</th>
-                <th>{{data.prev_reading}}</th>
-                <th>{{data.current_reading}}</th>
+                <th>{{data.meter_id}}</th>
+                <th>{{data.complain}}</th>
                 <th>{{data.date}}</th>
-                <th>{{data.amount}}</th>
-                <th>{{data.is_paid}}</th>
-                <th>
-                    <a href="{% url 'e_ispaid' data.id %}">click to pay</a>
+                <th>{{data.phone_number}}</th> 
                 <!-- <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
                 </a>
                 <a href="#deleteEmployeeModal" class="delete" data-toggle="modal">
