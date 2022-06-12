@@ -39,45 +39,45 @@
 		</div>
 		<ul class="list-unstyled component m-0">
 		  <li class="active">
-		  <a href="#" class="dashboard"><i class="material-icons">settings</i>View complain </a>
+		  <a href="{% url 'electric_technician' %}" class="dashboard"><i class="material-icons">settings</i>View complain </a>
 		  </li>
-		  
+<!-- 		  
 		  <li class="dropdown">
 		  <a href="#homeSubmenu1" data-toggle="collapse" aria-expanded="false" 
 		  class="dropdown-toggle">
 		  <i class="material-icons" id="watercomplain">mail</i>Assigned complain
 		  </a>
 		  <ul class="collapse list-unstyled menu" id="homeSubmenu1">
-		     <li><a href="{% url 'electric_technician' %}" id="complain">Assigned complain</a></li>
+		     <li><a href="" id="complain">Assigned complain</a></li>
 			 <li><a href="#">layout 2</a></li>
 			 <li><a href="#">layout 3</a></li>
 		  </ul>
-		  </li>
+		  </li> -->
 		  
 		  
-		   <li class="dropdown">
+		   <!-- <li class="passive">
 		  <a href="#homeSubmenu2" data-toggle="collapse" aria-expanded="false" 
 		  class="dropdown-toggle">
-		  <i class="material-icons">settings</i>Electric Bill
+		  <i class="material-icons">settings</i>
 		  </a>
 		  <ul class="collapse list-unstyled menu" id="homeSubmenu2">
 		     <li><a href="#">Apps 1</a></li>
 			 <li><a href="#">Apps 2</a></li>
 			 <li><a href="#">Apps 3</a></li>
 		  </ul>
-		  </li>
+		  </li> -->
 		  
-		   <li class="dropdown">
+		   <!-- <li class="passive">
 		  <a href="#homeSubmenu3" data-toggle="collapse" aria-expanded="false" 
 		  class="dropdown-toggle">
-		  <i class="material-icons">mail</i>Electric Complain
+		  <i class="material-icons">mail</i>
 		  </a>
 		  <ul class="collapse list-unstyled menu" id="homeSubmenu3">
 		     <li><a href="#">Pages 1</a></li>
 			 <li><a href="#">Pages 2</a></li>
 			 <li><a href="#">Pages 3</a></li>
 		  </ul>
-		  </li>
+		  </li> -->
 		  
 <!-- 		  
 		   <li class="dropdown">
@@ -130,11 +130,11 @@
 		  </li> -->
 		  
 		   
+		  <!-- <li class="">
+		  <a href="#" class=""><i class="material-icons">date_range</i> </a>
+		  </li> -->
 		  <li class="">
-		  <a href="#" class=""><i class="material-icons">date_range</i>calender </a>
-		  </li>
-		  <li class="">
-		  <a href="#" class=""><i class="material-icons">perm_identity</i>sign out</a>
+		  <a href="{% url 'logout' %}"  class=""><i class="material-icons">perm_identity</i>sign out</a>
 		  </li>
 		
 		</ul>

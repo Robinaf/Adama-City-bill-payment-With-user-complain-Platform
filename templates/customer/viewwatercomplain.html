@@ -34,7 +34,9 @@
                 <th>Meter Id</th>
                 <th>Complain</th>
                 <th>Is Solved</th>
-                <th>Date</th>               
+                <th>Date</th>
+                <th>Phone Number</th> 
+                <th>Assigned to</th>                
                 </tr>
             </thead>
             {% for data in watercomplaindata %}
@@ -48,7 +50,8 @@
                 <th>{{data.complain}}</th>
                 <th>{{data.is_solved}}</th>
                 <th>{{data.date}}</th>
-                <th>{{data.phone_number}}</th>                
+                <th>{{data.phone_number}}</th>
+                <th>{{data.assigned_to}}</th>                  
                 <th>
                 
                     
@@ -65,6 +68,26 @@
                
             </tbody>
             {%endfor%}
+            {%for ms in messages%}
+            {% if ms.tags == 'warning' %}
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+            <script>
+              var m = "{{ ms }}";
+              swal("Warning", m, "warning")
+            </script>
+            {% endif %}
+            {% endfor %}
+            {%for msg in messages%}
+                    {% if msg.tags == 'success' %}
+                    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                    <script>
+                      var m = "{{ msg }}";
+                      swal("Perfect !", m, "success")
+                    </script>
+                    {% endif %}
+                    {% endfor %}
+
+
             
             
         </table>

@@ -217,9 +217,10 @@ def e_ispaid(request,pk):
     electricbalance =ElectricBalance.objects.get(id =1)
     billinfo=ElectricBillInfo.objects.filter(meter_id_id = y)
     amountt=pay.amount
-    payed =y-amountt
+    
     if pay.is_paid ==False:
         electricbalance.balance+=amountt
+        payed =y-amountt
         pay.is_paid=True
         customer.balance=payed
         customer.save()
@@ -233,3 +234,26 @@ def e_ispaid(request,pk):
     else:
         messages.warning(request,"It is paid before")
         return render(request,'customer/viewelectricbill.html')
+def solve_complain(request,pk):
+    x=request.user.username
+    y= ElectricCustomer.objects.get(username=x)
+    updatemytabel=ElectricComplain.objects.get(pk=pk)
+    electriccomplaindata = ElectricComplain.objects.filter(meter_id_id =y)
+    assigned=updatemytabel.assigned_to_id
+    solved=updatemytabel.is_solved
+    if solved==True:
+        messages.warning(request,'It is solved before')
+        return render(request,'customer/viewelectriccomplain.html')
+        
+    if assigned==None:
+        messages.warning(request,'It is not assigned yet')
+        return render(request,'customer/viewelectriccomplain.html')
+            
+    updatemytabel.is_solved=True
+    updatemytabel.save()
+    context = {
+        'electriccomplaindata':electriccomplaindata
+          }
+        
+    messages.success(request,'You  confirmed the solution successfully')
+    return render(request,'customer/viewelectriccomplain.html',context)

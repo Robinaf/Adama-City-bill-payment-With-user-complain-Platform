@@ -4,7 +4,6 @@
 # from unittest.util import _MAX_LENGTH
 from django.db import models
 from datetime import datetime, timedelta
-
 from users.models import Customer
 from users.models import *
 from django.utils import timezone

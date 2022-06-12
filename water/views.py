@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 import requests
+from datetime import datetime, timedelta
 from electric.models import *
 
 
@@ -23,6 +24,7 @@ def water_admin(request):
     return render(request,'water_admin/index.html',{'WaterCustomer':wc})
 @login_required
 def water_reader(request):
+
 
     if request.method=="POST":
         
@@ -39,95 +41,89 @@ def water_reader(request):
         year = request.POST.get('year')
         # bb=WaterBillInfo.objects.get(meter_id_id=meter_id_id)
         # prev =bb.prev_reading
-        wc = WaterCustomer.objects.get(meter_id=meter_id_id)
-        try:
+        
+        if WaterCustomer.objects.filter(meter_id=meter_id_id).exists():
+            wc = WaterCustomer.objects.get(meter_id=meter_id_id)
+
+            try:
             # prevv_read = WaterBillInfo.objects.filter(meter_id=meter_id_id).order_by('-date')[0]
             # prev_read=int(prevv_read.current_reading)
-            prev_read = float(WaterBillInfo.objects.filter(meter_id=meter_id_id).order_by('-date')[0].current_reading)
+                prev_read = float(WaterBillInfo.objects.filter(meter_id=meter_id_id).order_by('-date')[0].current_reading)
             # prevv_read = float(WaterBillInfo.objects.filter(meter_id=meter_id_id))
             # prev_read =prevv_read.order_by('-date')[0].current_reading
-            print(prev_read)
-        except:
-            prev_read = 0
+                print(prev_read)
+            except:
+                prev_read = 0
         ################################################
          # when reading is less than 50
         #################################################
-        if current_reading-prev_read <=0:
-             print('current cannot be less than previous reading')
-             messages.warning(request, 'Incorrect Current Reading')
-             return render(request,'water_reader/water_reader.html')
+
+            if current_reading-prev_read <=0:
+                print('current cannot be less than previous reading')
+                messages.warning(request, 'Incorrect Current Reading')
+                return render(request,'water_reader/water_reader.html')
+            
         
 
-        elif current_reading-prev_read <= 50:
-            print('is less tan 50')
+            elif current_reading-prev_read <= 50:
+                print('is less tan 50')
+            
 
-            new_bill = WaterBillInfo.objects.create(
+                new_bill = WaterBillInfo.objects.create(
                 meter_id_id = wc.meter_id,
                 current_reading=float(current_reading), 
                 amount=(current_reading-prev_read)*0.2730, 
                 prev_reading=prev_read,
                
 
-            )
+                  )
          ################################################
          # when reading is less than 100
         #################################################
-        elif current_reading-prev_read <= 100:
-            print('is less tan 100')
-            new_bill = WaterBillInfo.objects.create(
+            elif current_reading-prev_read <= 100:
+                print('is less tan 100')
+               
+           
+                new_bill = WaterBillInfo.objects.create(
                 meter_id_id = wc.meter_id,
                 current_reading=float(current_reading), 
                 amount=(current_reading-prev_read)*0.6644, 
                 prev_reading=prev_read,
                
 
-            )
-        elif current_reading-prev_read <= 200:
-            print('is less tan 200')
-            new_bill = WaterBillInfo.objects.create(
+                    )
+            elif current_reading-prev_read <= 200:
+                 print('is less tan 200')
+           
+                 new_bill = WaterBillInfo.objects.create(
                 meter_id_id = wc.meter_id,
                 current_reading=float(current_reading), 
                 amount=(current_reading-prev_read)*1.3436, 
                 prev_reading=prev_read,
                 
 
-            )
-        elif current_reading < prev_read:
-            print('current cannot be less than previous reading')
-        else:
-            print(current_reading)
-            print(prev_read)
-            pass
-        
-        # prev_reading=float(prev)
-        # # bi= WaterBillInfo.objects.filter(prev_reading=prev_reading)
-        # # prev_reading=bi.prev_reading
-        # current_reading=float(current_reading)
-        # # if current_reading<=100:
-            
-
-        # billinfo = WaterBillInfo(
-        #     meter_id_id = wc.meter_id,
-           
-             
-        #     current_reading=float(current_reading),
-        #     month=month,
-        #     year=year,
-
-        #     # prev_reading = wc.prev_reading,
-            
-        #     amount = (current_reading-prev_reading) *2
-
-               
-           
-
-        # )
-        # billinfo.save()
+                     )
+            elif current_reading < prev_read:
+                print('current cannot be less than previous reading')
+            else:
+                print(current_reading)
+                print(prev_read)
+                pass
+            messages.success(request, 'You sent the data to server successfully')
+            return render (request,'water_reader/waterreaderhome.html')
+        messages.warning(request, 'Invalid meter id')
+        return render (request,'water_reader/water_reader.html')
        
-        messages.success(request, 'You sent the data to server successfully')
-        return render (request,'water_reader/waterreaderhome.html')
+
+        
+       
+        
     
     return render(request,'water_reader/water_reader.html')
+
+
+
+
 # def admin_cheek_bill(request):
 #     a=WaterBillInfo.objects.all()
  
@@ -266,6 +262,9 @@ def waterpayment(request):
         status = WaterBillInfo.objects.filter(meter_id_id=mm).order_by('-date')[0].is_paid
         waterbalance =WaterBalance.objects.get(id =2)
         print(waterbalance.balance)
+        if deadline<=datetime.now():
+            print('date')
+            # return render(request,'customer/viewwaterbill.html')
 
 
         
@@ -295,6 +294,8 @@ def waterpayment(request):
                 # billinfo.save()
 
                 # cus.save() 
+            messages.warning(request,'Insufficient balance')
+            return render(request,'customer/viewwaterbill.html')
         messages.warning(request,'It is already paid')
         return render(request,'customer/viewwaterbill.html')
 
@@ -334,7 +335,9 @@ def assignedwatercomplain(request):
     #///////////////////////
     # 
 def compeln_ditel(request, pk):
+
     updatemytabel=WaterComplain.objects.get(pk=pk)
+
     updatemytabel.is_solved=True
     updatemytabel.save()
     x=request.user.username
@@ -344,7 +347,33 @@ def compeln_ditel(request, pk):
     context = {
         'watercomplaindata':watercomplaindata
     }
-    return render(request,'customer/viewwatercomplain.html',context) 
+    return render(request,'customer/viewwatercomplain.html',context)
+def solve_complain(request,pk):
+    x=request.user.username
+    y= WaterCustomer.objects.get(username=x)
+    updatemytabel=WaterComplain.objects.get(pk=pk)
+    watercomplaindata = WaterComplain.objects.filter(meter_id_id =y)
+    assigned=updatemytabel.assigned_to_id
+    solved=updatemytabel.is_solved
+    if solved==True:
+        messages.warning(request,'It is solved before')
+        return render(request,'customer/viewwatercomplain.html')
+        
+    if assigned==None:
+        messages.warning(request,'It is not assigned yet')
+        return render(request,'customer/viewwatercomplain.html')
+            
+    updatemytabel.is_solved=True
+    updatemytabel.save()
+    context = {
+        'watercomplaindata':watercomplaindata
+          }
+        
+    messages.success(request,'You  confirmed the solution successfully')
+    return render(request,'customer/viewwatercomplain.html',context)
+   
+     
+   
 def ispaid(request,pk):
     x=request.user.username
     # y=x.balance
@@ -387,12 +416,12 @@ def wateryenepay(request):
                 "successUrl": "http://localhost:8000/success",
                 "ipnUrl": "http://localhost:8000/ipn",
                 "cancelUrl": "http://localhost:8000/cancel",
-                "merchantId": "SB1432",
-                "merchantOrderId": "l710.0",
+                "merchantId": "SB1699",
+                "merchantOrderId": billinfo.id,
                 "expiresAfter": 24,
                  "itemId": 60,
                 "itemName": "Billing",
-                "amountt": amountt,
+                "unitPrice": amountt,
                  "quantity": 1,
                 "discount": 0.0,
                "handlingFee": 0.0,
@@ -423,7 +452,7 @@ def success(request):
     status=billinfo.status
     print(status)
     ii= request.GET.get('itemId')
-    amountt = request.GET.get('TotalAmount')
+    total = request.GET.get('TotalAmount')
     moi = request.GET.get('MerchantOrderId')
     ti = request.GET.get('TransactionId')
     status = request.GET.get('Status')
@@ -445,13 +474,13 @@ def success(request):
     else:
         print('Invalid payment process')
     context={
-        'amountt':amountt,
+        'total':total,
         'status':status,
-        'TransactionCode':TransactionCode,
-        'BuyerId': BuyerId,
-        'moi':moi,
-        'MerchantCode':MerchantCode,
-        'billinfo':billinfo
+        # 'TransactionCode':TransactionCode,
+        # 'BuyerId': BuyerId,
+        # 'moi':moi,
+        # 'MerchantCode':MerchantCode,
+        # 'billinfo':billinfo
 
     }
     

@@ -3,16 +3,17 @@
 <body>
     <form action="https://test.yenepay.com/"  method="post">
         {% csrf_token %}
+        
         <h4> perform your payment here</h4>
-        {% csrf_token %}
+        
         {% for x, y in obj.items %}
             <input type="hidden" name="{{ x }}" value="{{ y }}">
-            <p>Total Amount you paid: {{ amountt }}</p>
+          
         {% endfor %}
-        {{ amountt }}
-        <div class="button">
+     
+      
             <input type="submit" value="Pay here"  >
-          </div>
+     
 
     </form>
   

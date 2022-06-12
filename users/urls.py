@@ -15,7 +15,7 @@ urlpatterns=[
     path('',views.index,name='index'),
     path('email/',views.sendemail,name ='email'),
     path('view_balance',views.view_balance,name='view_balance'),
-     path('reset_password/',
+    path('reset_password/',
     auth_views.PasswordResetView.as_view(template_name='password_reset.html'),
     name='reset_password'),
     path('reset_password_sent/',

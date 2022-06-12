@@ -40,7 +40,7 @@ class ElectricBillInfo(models.Model):
     date = models.DateTimeField(default=timezone.now)
     amount = models.DecimalField(max_digits=50,decimal_places=2,null=True)
     is_paid = models.BooleanField(max_length=50,default=False)
-    deadline =models.DateTimeField(default=datetime.now() + timedelta(days=30))
+    deadline =models.DateTimeField(default=datetime.now() + timedelta(days=4))
     class Meta:
         db_table = "electricbillinfo"
 

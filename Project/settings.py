@@ -83,6 +83,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Project.wsgi.application'
 AUTH_USER_MODEL = 'users.Account'
+#LOGIN_URL = '/admin/login/'
 
 
 
@@ -153,8 +154,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_HOST ='smtp.gmail.com'
 EMAIL_PORT =587
-EMAIL_HOST_USER ='robatemesgen43@gmail.com'
-EMAIL_HOST_PASSWORD = 'jbjxrklfzwgbfwaw'
+EMAIL_HOST_USER ='robatemesgen42@gmail.com'
+EMAIL_HOST_PASSWORD = 'rcnrkcywxacfuway'
 #####jbjxrklfzwgbfwaw#####
 EMAIL_USE_TLS =True
 EMAIL_USE_SSL=False

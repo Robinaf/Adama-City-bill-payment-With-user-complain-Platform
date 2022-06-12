@@ -14,6 +14,7 @@ urlpatterns=[
     path('electricpayment/',views.electricpayment,name='electricpayment'),
     path('elec_assigned_complain',views.elec_assigned_complain,name='elec_assigned_complain'),
     path('e_ispaid/<int:pk>/',views.e_ispaid,name='e_ispaid'),
+    path('solve_complain/<int:pk>/',views.solve_complain,name='solve_complain'),
 
    
     

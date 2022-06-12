@@ -49,10 +49,9 @@
                 <th>{{data.is_solved}}</th>
                 <th>{{data.date}}</th>                
                 <th>
-                <form action=" " method="post">
-                    {% csrf_token %}
-                <a href="{% url 'viewelectriccomplain' %}">solved?</a>
-                </form> 
+                
+                <a href="{% url 'solve_complain' data.id %}">solved?</a>
+               
                 <!-- <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i> -->
 
                 <!-- <a href="#deleteEmployeeModal" class="delete" data-toggle="modal">
@@ -64,9 +63,28 @@
                
             </tbody>
             {%endfor%}
+            {%for ms in messages%}
+            {% if ms.tags == 'warning' %}
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+            <script>
+              var m = "{{ ms }}";
+              swal("Warning", m, "warning")
+            </script>
+            {% endif %}
+            {% endfor %}
+            {%for msg in messages%}
+            {% if msg.tags == 'success' %}
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+            <script>
+              var m = "{{ msg }}";
+              swal("Perfect !", m, "success")
+            </script>
+            {% endif %}
+            {% endfor %}
             
             
         </table>
+
         
         <div class="clearfix">
             <div class="hint-text">showing <b>5</b> out of <b>25</b></div>
