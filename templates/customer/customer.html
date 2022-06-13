@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'customer/customerbase.html' %}
+{% block content %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,10 +7,28 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>This is Customer page</h1>
-    {%if request.user.is_authenticated %} 
-    <a href="{% url 'logout' %}">Log-Out</a>
-{% endif %}
+    <h1>welcome to Customer page</h1>
+    {%for msg in messages%}
+    {% if msg.tags == 'success' %}
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+      var m = "{{ msg }}";
+      swal("Perfect !", m, "success")
+    </script>
+    {% endif %}
+    {% endfor %}
+    {%for ms in messages%}
+    {% if ms.tags == 'warning' %}
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+      var m = "{{ ms }}";
+      swal("Warning", m, "warning")
+    </script>
+    {% endif %}
+    {% endfor %}
+    
+   
 </body>
-</html>
+{% endblock content %}
+
 

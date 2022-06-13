@@ -40,7 +40,7 @@ class ElectricBillInfo(models.Model):
     date = models.DateTimeField(default=timezone.now)
     amount = models.DecimalField(max_digits=50,decimal_places=2,null=True)
     is_paid = models.BooleanField(max_length=50,default=False)
-    deadline =models.DateTimeField(default=datetime.now() + timedelta(days=4))
+    deadline =models.DateTimeField(default=timezone.now() + timedelta(minutes=3))
     class Meta:
         db_table = "electricbillinfo"
 
@@ -51,6 +51,7 @@ class ElectricComplain(models.Model):
     is_solved = models.BooleanField(max_length=50,default=False )
     phone_number=models.IntegerField(null=True)
     assigned_to =models.ForeignKey(ElectricTechnician,null=True,max_length=100, on_delete=models.CASCADE,)
+    tec_reported=models.BooleanField(max_length=50,default=False)
 
     class Meta:
         db_table = "electric_complain"

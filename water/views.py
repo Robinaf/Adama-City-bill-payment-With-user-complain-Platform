@@ -4,7 +4,7 @@ from pyexpat import model
 from django.db.models import IntegerField
 from django.db.models.functions import Cast
 from django.shortcuts import render,redirect
-from pymysql import NULL
+# from pymysql import NULL
 from .models import WaterBalance, WaterBillInfo,WaterCustomer,WaterComplain,WaterReader,WaterTechnician
 from django.http import HttpResponse
 from users.models import Customer
@@ -159,21 +159,25 @@ def complain(request):
     if request.method=="POST":
         phone_number=request.POST.get('phone_number')
         complain=request.POST.get('complain')
-        if complain ==NULL:
-            messages.warning(request,'your complain is impty')
-            return(request,'customer/complain1.html')
-        else:
-            x=request.user.username
-            y=WaterCustomer.objects.get(username=x)
-            m=y.meter_id
-            complaindetail = WaterComplain(
-            meter_id_id =m,
-             complain=complain,
-             phone_number=phone_number
+        x=request.user.username
+        y=WaterCustomer.objects.get(username=x)
+        m=y.meter_id
+        complaindetail = WaterComplain(
+        meter_id_id =m,
+            complain=complain,
+            phone_number=phone_number
                     )
-            complaindetail.save()
-            messages.success(request,'Complain sent successfully')
-            return render(request,'customer/viewwatercomplain.html')
+        complaindetail.save()
+        messages.success(request,'Complain sent successfully')
+        return render(request,'customer/viewwatercomplain.html')
+
+        # phone_number=request.POST.get('phone_number')
+        # complain=request.POST.get('complain')
+        # if complain ==NULL:
+        #     messages.warning(request,'your complain is impty')
+        #     return(request,'customer/complain1.html')
+        # else:
+            
 
         
 
@@ -237,15 +241,23 @@ def report(request):
     
 def viewwaterbill(request):
     x=request.user.username
-    y=WaterCustomer.objects.get(username=x)
+    x=request.user.username
+    print(x)
+    # try:
+    #     if WaterCustomer.objects.get(username=x).exists():
+    y= WaterCustomer.objects.get(username=x)
     m=y.meter_id
-    billdata=WaterBillInfo.objects.filter(meter_id_id = y)
+    billinfo=WaterBillInfo.objects.filter(meter_id_id = y)
     context = {
-             'billdata': billdata
+            'billinfo': billinfo
             
         }
-   
+        
     return render(request,'customer/viewwaterbill.html',context)
+    #         return render(request,'customer/customer.html')
+    # except Exception as e:
+    #     messages.warning(request,'you are not registered for water supply')
+    #     return render(request,'customer/customer.html')
     
 def waterpayment(request):
     if request.method == "POST":
@@ -305,14 +317,25 @@ def waterpayment(request):
 def viewwatercomplain(request):
     x=request.user.username
     print(x)
+    # y= WaterCustomer.objects.get(username=x)
+    # watercomplaindata = WaterComplain.objects.filter(meter_id_id =y)
+    # try:
+    #     if WaterCustomer.objects.get(username=x).exists():
     y= WaterCustomer.objects.get(username=x)
+    m=y.meter_id
     watercomplaindata = WaterComplain.objects.filter(meter_id_id =y)
-    
     context = {
-        'watercomplaindata':watercomplaindata
-    }
-    
+            'watercomplaindata': watercomplaindata
+            
+        }
+        
     return render(request,'customer/viewwatercomplain.html',context)
+    #         return render(request,'customer/customer.html')
+    # except Exception as e:
+    #     messages.warning(request,'you are not registered for water supply')
+    #     return render(request,'customer/customer.html')
+    
+    
 def assignedwatercomplain(request):
     x=request.user.username
     print(x)
@@ -380,25 +403,54 @@ def ispaid(request,pk):
     customer =Customer.objects.get(username=x)
     y=customer.balance
     pay=WaterBillInfo.objects.get(pk=pk)
+    date=pay.deadline
     waterbalance =WaterBalance.objects.get(id =2)
     billdata=WaterBillInfo.objects.filter(meter_id_id = y)
     amountt=pay.amount
+    penality=amountt+50
+    penal=y-penality
     payed =y-amountt
-    if pay.is_paid ==False:
-        waterbalance.balance+=amountt
-        pay.is_paid=True
-        customer.balance=payed
-        customer.save()
-        waterbalance.save()
-        pay.save()
-        context={
-            'billdata':billdata
-        }
-        messages.success(request,"You paid successfully")
-        return render(request,'customer/viewwaterbill.html',context)
-    else:
-        messages.warning(request,"It is paid before")
-        return render(request,'customer/viewwaterbill.html')
+    treshold=amountt+50
+    if y>=treshold:
+         if timezone.now()<date:
+            if pay.is_paid ==False:
+               waterbalance.balance+=amountt
+               pay.is_paid=True
+               customer.balance=payed
+               customer.save()
+               waterbalance.save()
+               pay.save()
+               context={
+                  'billdata':billdata
+               }
+               messages.success(request,"You paid successfully")
+               return render(request,'customer/viewwaterbill.html',context)
+            else:
+               messages.warning(request,"It is paid before")
+               return render(request,'customer/viewwaterbill.html')
+
+         else:
+            if pay.is_paid ==False:
+               waterbalance.balance+=penality
+               pay.is_paid=True
+               customer.balance=penal
+               customer.save()
+               waterbalance.save()
+               pay.save()
+               context={
+                  'billdata':billdata
+               }
+               messages.success(request,"You paid with penality")
+               return render(request,'customer/viewwaterbill.html',context)
+            else:
+               messages.warning(request,"It is paid before")
+               return render(request,'customer/viewwaterbill.html')
+    messages.warning(request,"the balance you have is insufficient")
+    return render(request,'customer/viewwaterbill.html')
+
+   
+
+   
     
 
 def wateryenepay(request):
@@ -517,6 +569,30 @@ def water_assigned_complain(request):
         'assign':assign
     }
     return render(request,'water_technician/waterassigned.html',context) 
+def wtec_reported(request,pk):
+    x=request.user.username
+    y= WaterTechnician.objects.get(username=x)
+    updatemytabel=WaterComplain.objects.get(pk=pk)
+    assign = WaterComplain.objects.filter(assigned_to =y)
+    assigned=updatemytabel.assigned_to_id
+    solved=updatemytabel.tec_reported
+    updatemytabel.tec_reported=True
+    updatemytabel.save()
+    context = {
+        'assign':assign
+          }
+    if solved==True:
+        messages.warning(request,'you confirmed it already')
+        return render(request,'water_technician/viewwatercomplain.html',context)
+        
+    # if assigned==None:
+    #     messages.warning(request,'It is not assigned yet')
+    #     return render(request,'customer/viewwatercomplain.html')
+            
+    
+        
+    messages.success(request,'You  confirmed the solution successfully')
+    return render(request,'water_technician/viewwatercomplain.html',context)
 
 
        

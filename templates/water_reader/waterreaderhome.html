@@ -11,6 +11,15 @@
 </script>
 {% endif %}
 {% endfor %}
+{%for msg in messages%}
+      {% if msg.tags == 'success' %}
+      <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script>
+          var m = "{{ msg }}";
+          swal("Perfect !", m, "success")
+        </script>
+        {% endif %}
+        {% endfor %}
 
 
 {% endblock content %}

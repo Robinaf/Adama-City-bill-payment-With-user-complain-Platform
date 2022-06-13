@@ -20,5 +20,6 @@ urlpatterns=[
     path('success',views.success,name='success'),
     path('cancel',views.cancel, name='cancel'),
     path('ipn/', views.ipn, name='ipn'),
+    path('wtec_reported/<int:pk>/',views.wtec_reported,name='wtec_reported'),
 
 ]

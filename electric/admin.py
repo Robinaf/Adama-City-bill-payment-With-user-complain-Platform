@@ -61,7 +61,7 @@ class AssignComplainAdmin(admin.ModelAdmin):
 class ElectricBillAdmin(admin.ModelAdmin):
      model =ElectricBillInfo
      readonly_fields = ('prev_reading','current_reading','amount',)
-     list_display =('id','meter_id','prev_reading','current_reading','amount','is_paid')
+     list_display =('id','meter_id','prev_reading','current_reading','amount','is_paid','date','deadline')
      def has_change_permission(self, request, obj=None):
         return False
      def has_add_permission(self, request, obj=None):

@@ -49,7 +49,7 @@ class WaterBillInfo(models.Model):
     # month=models.CharField(max_length=50,choices=Month_choice,blank=True,null = True)
     # year = models.IntegerField(null=True)
     amount = models.DecimalField(max_digits=50,decimal_places=2,null=True)
-    deadline =models.DateTimeField(default=datetime.now() + timedelta(minutes=3))
+    deadline =models.DateTimeField(default=datetime.now() + timedelta(days=3))
     class Meta:
         db_table = "waterbillinfo"
     def __str__(self):
@@ -64,6 +64,7 @@ class WaterComplain(models.Model):
     is_solved = models.CharField(max_length=50,default=False )#null=True,default='not solved')
     phone_number=models.IntegerField(null=True)
     assigned_to=models.ForeignKey(WaterTechnician,null=True,max_length=100, on_delete=models.CASCADE,)
+    tec_reported=models.BooleanField(max_length=50,default=False )
     
     class Meta:
         db_table = "water_complain"

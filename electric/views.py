@@ -4,7 +4,7 @@ from pyexpat import model
 from django.db.models import IntegerField
 from django.db.models.functions import Cast
 from django.shortcuts import render,redirect
-from pymysql import NULL
+# from pymysql import NULL
 from .models import ElectricBalance, ElectricBillInfo,ElectricCustomer,ElectricComplain, ElectricTechnician
 from django.http import HttpResponse
 from users.models import Customer,Account
@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 import requests
+from django.utils import timezone
 
 
 # Create your views here.
@@ -91,48 +92,96 @@ def electric_reader(request):
     return render(request,'electric_reader/electric_reader.html')
 ##########################Electric Complain ############
 def electriccomplain(request):
+    x=request.user.username
+    print(x)
+    # try:
+    #    xx =ElectricCustomer.objects.get(username=x)
+       
+       
+    
+
+
+    # except UnboundLocalError as e :
+    #     print(xx)
+    #     messages.warning(request,'you are not registered for electric utility')
+    #     return render(request,'customer/customer.html')
+    # except xx.DoesNotExist :
+    #     print(xx)
+    #     messages.warning(request,'you are not registered for electric utility')
+    #     return render(request,'customer/customer.html')
+    
+    
+    # xx =ElectricCustomer.objects.get(username=x)
+       
+    # if ElectricCustomer.objects.get(username=x) is not None:
+
     if request.method=="POST":
         phone_number=request.POST.get('phone_number')
         complain=request.POST.get('complain')
-        if complain ==NULL:
-            messages.warning(request,'your complain is empty')
-            return(request,'customer/electriccomplain.html')
-        else:
-            x=request.user.username
-            y=ElectricCustomer.objects.get(username=x)
-            m=y.meter_id
-            complaindetail = ElectricComplain(
-            meter_id_id =m,
-             complain=complain,
-             phone_number=phone_number
-                    )
-            complaindetail.save()
-            messages.success(request,'Complain sent successfully')
-            return render(request,'customer/viewelectriccomplain.html')
+        
+        x=request.user.username
+        y=ElectricCustomer.objects.get(username=x)
+        m=y.meter_id
+        billinfo=ElectricBillInfo.objects.filter(meter_id_id = y)
+        context = {
+        'billinfo': billinfo
+        
+    }
+        complaindetail = ElectricComplain(
+        meter_id_id =m,
+        complain=complain,
+        phone_number=phone_number
+                )
+        complaindetail.save()
+        messages.success(request,'Complain sent successfully')
+        return render(request,'customer/viewelectriccomplain.html',context)
     return render(request,'customer/electriccomplain.html',)
+    # messages.warning(request,'you are not registered for electric utility')
+    # return render(request,'customer/customer.html')
+
+
+    
 def viewelectricbill(request):
     x=request.user.username
-    print(x)
-    y=ElectricCustomer.objects.get(username=x)
+    # print(x)
+    # try:
+    #         if ElectricCustomer.objects.get(username=x).exists():
+    y= ElectricCustomer.objects.get(username=x)
     m=y.meter_id
     billinfo=ElectricBillInfo.objects.filter(meter_id_id = y)
     context = {
-             'billinfo': billinfo
-            
-        }
-   
+        'billinfo': billinfo
+        
+    }
+    
     return render(request,'customer/viewelectricbill.html',context)
+
+    # except Exception as e:
+    #     messages.warning(request,'you are not registered for electric utility')
+    #     return render(request,'customer/customer.html')
+        
 def viewelectriccomplain(request):
     x=request.user.username
     print(x)
+    # y= ElectricCustomer.objects.get(username=x)
+    # electriccomplaindata = ElectricComplain.objects.filter(meter_id_id =y)
+    # try:
+    #     if ElectricCustomer.objects.get(username=x).exists():
     y= ElectricCustomer.objects.get(username=x)
+    m=y.meter_id
     electriccomplaindata = ElectricComplain.objects.filter(meter_id_id =y)
-    
     context = {
-        'electriccomplaindata':electriccomplaindata
-    }
-    
+            'electriccomplaindata': electriccomplaindata
+            
+        }
+        
     return render(request,'customer/viewelectriccomplain.html',context)
+    #         return render(request,'customer/customer.html')
+    # except Exception as e:
+    #     messages.warning(request,'you are not registered for electric utility')
+    #     return render(request,'customer/customer.html')
+    
+    # return render(request,'customer/viewelectriccomplain.html',context)
 def electricpayment(request):
     if request.method == "POST":
         x=request.user.username      
@@ -214,26 +263,54 @@ def e_ispaid(request,pk):
     customer =Customer.objects.get(username=x)
     y=customer.balance
     pay=ElectricBillInfo.objects.get(pk=pk)
+    date=pay.deadline
     electricbalance =ElectricBalance.objects.get(id =1)
     billinfo=ElectricBillInfo.objects.filter(meter_id_id = y)
     amountt=pay.amount
+    penality=amountt+50
+    payed=y-amountt
+    penal=y-penality
+    treshold=amountt+50
     
-    if pay.is_paid ==False:
-        electricbalance.balance+=amountt
-        payed =y-amountt
-        pay.is_paid=True
-        customer.balance=payed
-        customer.save()
-        electricbalance.save()
-        pay.save()
-        context={
-            'billinfo':billinfo
-        }
-        messages.success(request,"You paid successfully")
-        return render(request,'customer/viewelectricbill.html',context)
-    else:
-        messages.warning(request,"It is paid before")
-        return render(request,'customer/viewelectricbill.html')
+    if y>=treshold:
+         if timezone.now()<date:
+            if pay.is_paid ==False:
+               electricbalance.balance+=amountt
+               pay.is_paid=True
+               customer.balance=payed
+               customer.save()
+               electricbalance.save()
+               pay.save()
+               context={
+                  'billinfo':billinfo
+               }
+               messages.success(request,"You paid successfully")
+               return render(request,'customer/viewelectricbill.html',context)
+            else:
+               messages.warning(request,"It is paid before")
+               return render(request,'customer/viewelectricbill.html')
+
+         else:
+            if pay.is_paid ==False:
+               electricbalance.balance+=penality
+               pay.is_paid=True
+               customer.balance=penal
+               customer.save()
+               electricbalance.save()
+               pay.save()
+               context={
+                  'billinfo':billinfo
+               }
+               messages.success(request,"You paid with penality")
+               return render(request,'customer/viewelectricbill.html',context)
+            else:
+               messages.warning(request,"It is paid before")
+               return render(request,'customer/viewelectricbill.html')
+    messages.warning(request,"the balance you have is insufficient")
+    return render(request,'customer/viewelectricbill.html')
+
+   
+
 def solve_complain(request,pk):
     x=request.user.username
     y= ElectricCustomer.objects.get(username=x)
@@ -257,3 +334,27 @@ def solve_complain(request,pk):
         
     messages.success(request,'You  confirmed the solution successfully')
     return render(request,'customer/viewelectriccomplain.html',context)
+def etec_reported(request,pk):
+    x=request.user.username
+    y= ElectricTechnician.objects.get(username=x)
+    updatemytabel=ElectricComplain.objects.get(pk=pk)
+    assign = ElectricComplain.objects.filter(assigned_to =y)
+    assigned=updatemytabel.assigned_to_id
+    solved=updatemytabel.tec_reported
+    updatemytabel.tec_reported=True
+    updatemytabel.save()
+    context = {
+        'assign':assign
+          }
+    if solved==True:
+        messages.warning(request,'you confirmed it already')
+        return render(request,'electric_technician/viewelectriccomplain.html',context)
+        
+    # if assigned==None:
+    #     messages.warning(request,'It is not assigned yet')
+    #     return render(request,'customer/viewwatercomplain.html')
+            
+    
+        
+    messages.success(request,'You  confirmed the solution successfully')
+    return render(request,'electric_technician/viewelectriccomplain.html',context)

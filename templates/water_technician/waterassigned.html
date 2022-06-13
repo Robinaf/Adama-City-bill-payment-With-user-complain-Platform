@@ -35,6 +35,7 @@
                 <th>message</th>
                 <th>Date</th>
                 <th>Assigned to</th>
+                <th>Technician confirmed</th>
                 </tr>
             </thead>
             {% for data in assign %}
@@ -48,11 +49,9 @@
                 <th>{{data.complain}}</th>
                 <th>{{data.date}}</th>
                 <th>{{data.assigned_to}}</th>
-                <!-- <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
-                </a>
-                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal">
-                <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
-                </a> -->
+                <th>{{data.tec_reported}}</th>
+                </th>
+                <a href="{% url 'wtec_reported' data.id %}">confirmed</a>
                 </th>
                 </tr>
                 

@@ -227,6 +227,7 @@ form .user-details .input-box{
             <span class="gender">Female</span>
           </label>
           </div>
+          
                                                                    
         <!-- </div>
         <div class="customer">
@@ -248,7 +249,26 @@ form .user-details .input-box{
               document.getElementById('message').innerHTML = 'not matching';
             }
           }
+    
     </script>
+    {%for msg in messages%}
+    {% if msg.tags == 'success' %}
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+      var m = "{{ msg }}";
+      swal("Perfect !", m, "success")
+    </script>
+    {% endif %}
+    {% endfor %}
+    {%for ms in messages%}
+    {% if ms.tags == 'warning' %}
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+      var m = "{{ ms }}";
+      swal("Warning", m, "warning")
+    </script>
+    {% endif %}
+    {% endfor %}
 
       </form>
       

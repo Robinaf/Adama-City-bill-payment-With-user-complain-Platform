@@ -35,6 +35,8 @@
                 <th>message</th>
                 <th>Date</th>
                 <th>phone number</th>
+                <th>is solved</th>
+                <th>technician Reported</th>
                 </tr>
             </thead>
             {% for data in assignn %}
@@ -47,7 +49,9 @@
                 <th>{{data.meter_id}}</th>
                 <th>{{data.complain}}</th>
                 <th>{{data.date}}</th>
-                <th>{{data.phone_number}}</th> 
+                <th>{{data.phone_number}}</th>
+                <th>{{data.is_solved}}</th> 
+                <th>{{data.tec_reported}}</th>  
                 <!-- <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
                 </a>
                 <a href="#deleteEmployeeModal" class="delete" data-toggle="modal">

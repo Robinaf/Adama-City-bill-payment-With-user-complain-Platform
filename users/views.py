@@ -66,6 +66,7 @@ def registerPage(request):
             # Account.role = 'Customer'
             user=form.save(commit=False)
             user.role = 7
+            user.is_active=False
             user.save()
             username = form.cleaned_data.get('username')
             group= Group.objects.get(name='customer')
@@ -74,9 +75,10 @@ def registerPage(request):
                 request, "Account sucessfully created for " + username)
             return redirect('login')
         else:
-            print("Not registered")
-            print(form.errors)
-            return HttpResponse(form.errors)
+            messages.warning(
+                request, "Invalid credentials. Name and username must be only letters")
+            
+            return render(request, 'signup.html')
 
     context = {'form': form}
     return render(request, 'signup.html', context)
@@ -125,7 +127,16 @@ def user_login(request):
     
 @login_required
 def home(request):
-  return render(request, 'customer/customerbase.html')
+
+    x=request.user.username
+    y=WaterCustomer.objects.get(username=x)
+    m=y.meter_id
+    billdata=WaterBillInfo.objects.filter(meter_id_id = y)
+    context = {
+             'billdata': billdata
+            
+        }
+    return render(request, 'customer/viewwaterbill.html',context)
   # Logout view
   # 
   #  
