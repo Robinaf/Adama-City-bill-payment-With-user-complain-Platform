@@ -1,1 +1,1 @@
-what an ammazing memory is this Obbo Roba
+"Adama Bill Payment System was developed by Roba and his team. It was a final project implemented in 2021. The system has many functionalities for water and electricity payment in Adama City. It is great memories for Obbo Roba and his team, as their valuable efforts were put into the implementation of this project.
